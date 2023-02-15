@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__      = "Lewis Christopher Brand"
 __copyright__ = "Copyright 2022, The University of Nottingham"
