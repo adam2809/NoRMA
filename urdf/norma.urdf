@@ -32,6 +32,11 @@
       <inertia ixx="${1/12*base_mass*(base_size_z*base_size_z+base_size_y*base_size_y)}" ixy="0.0" ixz="0.0" iyy="${1/12*base_mass*(base_size_x*base_size_x+base_size_z*base_size_z)}" iyz="0.0" izz="${1/12*base_mass*(base_size_x*base_size_x+base_size_y*base_size_y)}"/>
     </inertial>
   </link>
+  <link name="dummy"></link>
+  <joint name="dummy_joint" type="fixed">
+     <parent link="dummy"/>
+     <child link="base_link"/>
+   </joint>
 
   <xacro:property name="wheel_radious" value="0.2" />
   <xacro:property name="wheel_length" value="0.1" />
