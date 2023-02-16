@@ -43,10 +43,18 @@
   </xacro:macro>
 
   <xacro:wheel wheel_name="left"/>
+  <xacro:wheel wheel_name="right"/>
 
   <joint name="base_to_left_wheel" type="continuous">
     <parent link="base_link"/>
     <child link="left_wheel"/>
+    <origin xyz="${-(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+
+  <joint name="base_to_right_wheel" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
     <origin xyz="${(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
     <axis xyz="1 0 0"/>
   </joint>
