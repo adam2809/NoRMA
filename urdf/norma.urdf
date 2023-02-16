@@ -9,6 +9,7 @@
     <color rgba="0.8 0.8 0.8 1"/>
   </material>
 
+  <xacro:property name="base_mass" value="25" />
   <xacro:property name="base_size_x" value="1.0" />
   <xacro:property name="base_size_y" value="1.2" />
   <xacro:property name="base_size_z" value="1.5" />
@@ -26,6 +27,10 @@
         <box size="${base_size}"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="${base_mass}"/>
+      <inertia ixx="${1/12*base_mass*(base_size_z*base_size_z+base_size_y*base_size_y)}" ixy="0.0" ixz="0.0" iyy="${1/12*base_mass*(base_size_x*base_size_x+base_size_z*base_size_z)}" iyz="0.0" izz="${1/12*base_mass*(base_size_x*base_size_x+base_size_y*base_size_y)}"/>
+    </inertial>
   </link>
 
   <xacro:property name="wheel_radious" value="0.2" />
@@ -40,12 +45,14 @@
         <origin rpy="0 1.57075 0"/>
         <material name="gray"/>
       </visual>
+
       <collision>
         <geometry>
           <cylinder length="${wheel_length}" radius="${wheel_radious}"/>
         </geometry>
         <origin rpy="0 1.57075 0"/>
       </collision>
+
       <inertial>
         <mass value="${wheel_mass}"/>
         <inertia ixx="${1/12*wheel_mass*(3*wheel_radious*wheel_radious+wheel_length*wheel_length)}" ixy="0.0" ixz="0.0" iyy="${1/12*wheel_mass*(3*wheel_radious*wheel_radious+wheel_length*wheel_length)}" iyz="0.0" izz="${1/2*wheel_mass*wheel_radious*wheel_radious}"/>
