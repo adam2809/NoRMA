@@ -70,10 +70,24 @@
       <origin xyz="${reflect*(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
       <axis xyz="1 0 0"/>
     </joint>
+    <transmission name="${wheel_name}_wheel_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="${wheel_name}_wheel_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="base_to_${wheel_name}_wheel">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
   </xacro:macro>
 
   <xacro:wheel wheel_name="left" reflect="-1"/>
   <xacro:wheel wheel_name="right" reflect="1"/>
 
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </gazebo>
 </robot>
 
