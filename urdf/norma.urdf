@@ -14,7 +14,7 @@
   <xacro:property name="base_size_y" value="1.2" />
   <xacro:property name="base_size_z" value="1.5" />
   <xacro:property name="base_size" value="${base_size_x} ${base_size_y} ${base_size_z}" />
-  <link name="base_link">
+  <link name="dummy">
     <visual>
       <geometry>
         <box size="${base_size}"/>
@@ -32,10 +32,10 @@
       <inertia ixx="${1/12*base_mass*(base_size_z*base_size_z+base_size_y*base_size_y)}" ixy="0.0" ixz="0.0" iyy="${1/12*base_mass*(base_size_x*base_size_x+base_size_z*base_size_z)}" iyz="0.0" izz="${1/12*base_mass*(base_size_x*base_size_x+base_size_y*base_size_y)}"/>
     </inertial>
   </link>
-  <link name="dummy"></link>
+  <link name="base_link"></link>
   <joint name="dummy_joint" type="fixed">
-     <parent link="dummy"/>
-     <child link="base_link"/>
+     <parent link="base_link"/>
+     <child link="dummy"/>
    </joint>
 
   <xacro:property name="wheel_radious" value="0.2" />
@@ -67,7 +67,7 @@
     <joint name="base_to_${wheel_name}_wheel" type="continuous">
       <parent link="base_link"/>
       <child link="${wheel_name}_wheel"/>
-      <origin xyz="${reflect*(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
+      <origin xyz="${reflect*(base_size_x+wheel_length)/2} 0 ${-base_size_z/2+wheel_radious-0.01}"/>
       <axis xyz="1 0 0"/>
     </joint>
     <transmission name="${wheel_name}_wheel_trans">
