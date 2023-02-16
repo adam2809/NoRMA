@@ -9,7 +9,10 @@
     <color rgba="0.8 0.8 0.8 1"/>
   </material>
 
-  <xacro:property name="base_size" value="1.0 1.2 1.5" />
+  <xacro:property name="base_size_x" value="1.0" />
+  <xacro:property name="base_size_y" value="1.2" />
+  <xacro:property name="base_size_z" value="1.5" />
+  <xacro:property name="base_size" value="${base_size_x} ${base_size_y} ${base_size_z}" />
   <link name="base_link">
     <visual>
       <geometry>
@@ -41,7 +44,7 @@
   <joint name="base_to_left_wheel" type="continuous">
     <parent link="base_link"/>
     <child link="left_wheel"/>
-    <origin xyz="0.55 0 -0.75"/>
+    <origin xyz="${(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
     <axis xyz="1 0 0"/>
   </joint>
 
