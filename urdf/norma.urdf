@@ -30,16 +30,19 @@
 
   <xacro:property name="wheel_radious" value="0.2" />
   <xacro:property name="wheel_length" value="0.1" />
-  <link name="left_wheel">
-    <visual>
-      <geometry>
-        <cylinder length="0.1" radius="0.20"/>
-      </geometry>
-      <origin rpy="0 1.57075 0"/>
-      <material name="gray"/>
-    </visual>
-  </link>
+  <xacro:macro name="wheel" params="wheel_name">
+    <link name="${wheel_name}_wheel">
+      <visual>
+        <geometry>
+          <cylinder length="${wheel_length}" radius="${wheel_radious}"/>
+        </geometry>
+        <origin rpy="0 1.57075 0"/>
+        <material name="gray"/>
+      </visual>
+    </link>
+  </xacro:macro>
 
+  <xacro:wheel wheel_name="left"/>
 
   <joint name="base_to_left_wheel" type="continuous">
     <parent link="base_link"/>
