@@ -41,7 +41,7 @@
   <xacro:property name="wheel_radious" value="0.2" />
   <xacro:property name="wheel_length" value="0.1" />
   <xacro:property name="wheel_mass" value="1" />
-  <xacro:macro name="wheel" params="wheel_name">
+  <xacro:macro name="wheel" params="wheel_name reflect">
     <link name="${wheel_name}_wheel">
       <visual>
         <geometry>
@@ -63,24 +63,17 @@
         <inertia ixx="${1/12*wheel_mass*(3*wheel_radious*wheel_radious+wheel_length*wheel_length)}" ixy="0.0" ixz="0.0" iyy="${1/12*wheel_mass*(3*wheel_radious*wheel_radious+wheel_length*wheel_length)}" iyz="0.0" izz="${1/2*wheel_mass*wheel_radious*wheel_radious}"/>
       </inertial>
     </link>
+
+    <joint name="base_to_${wheel_name}_wheel" type="continuous">
+      <parent link="base_link"/>
+      <child link="${wheel_name}_wheel"/>
+      <origin xyz="${reflect*(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
+      <axis xyz="1 0 0"/>
+    </joint>
   </xacro:macro>
 
-  <xacro:wheel wheel_name="left"/>
-  <xacro:wheel wheel_name="right"/>
-
-  <joint name="base_to_left_wheel" type="continuous">
-    <parent link="base_link"/>
-    <child link="left_wheel"/>
-    <origin xyz="${-(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
-    <axis xyz="1 0 0"/>
-  </joint>
-
-  <joint name="base_to_right_wheel" type="continuous">
-    <parent link="base_link"/>
-    <child link="right_wheel"/>
-    <origin xyz="${(base_size_x+wheel_length)/2} 0 ${-base_size_z/2}"/>
-    <axis xyz="1 0 0"/>
-  </joint>
+  <xacro:wheel wheel_name="left" reflect="-1"/>
+  <xacro:wheel wheel_name="right" reflect="1"/>
 
 </robot>
 
