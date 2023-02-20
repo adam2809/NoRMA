@@ -3,6 +3,7 @@
   <arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz" />
   <arg name="cmd_vel_topic" default="/norma_diff_drive_controller/cmd_vel" />
   <arg name="odom_topic" default="/norma_diff_drive_controller/odom" />
+  <arg name="map_file" default="$(find turtlebot3_navigation)/maps/map.yaml"/>
   <include file="$(find urdf_sim_tutorial)/launch/gazebo.launch">
     <arg name="model" value="$(arg model)" />
   </include>
@@ -25,12 +26,18 @@
     <param name="default_topic" value="/norma_diff_drive_controller/cmd_vel"/>
   </node>
 
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <include file="$(find wheelchair_virtual_joystick_driver)/launch/amcl.launch"/>
+
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
     <rosparam file="$(find wheelchair_virtual_joystick_driver)/config/costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find wheelchair_virtual_joystick_driver)/config/costmap_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find wheelchair_virtual_joystick_driver)/config/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find wheelchair_virtual_joystick_driver)/config/move_base_params.yaml" command="load" />
     <rosparam file="$(find wheelchair_virtual_joystick_driver)/config/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find wheelchair_virtual_joystick_driver)/config/global_costmap_params.yaml" command="load" />
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
   </node>
