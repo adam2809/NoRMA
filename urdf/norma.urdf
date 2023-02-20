@@ -84,6 +84,67 @@
   <xacro:wheel wheel_name="left" reflect="-1"/>
   <xacro:wheel wheel_name="right" reflect="1"/>
 
+  <xacro:macro name="sensor_hokuyo" params="parent">
+    <link name="laser">
+      <collision>
+        <origin xyz="0.05 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.1 0.1 0.1"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0.05 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.1 0.1 0.1"/>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass value="1e-5" />
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+    <joint name="hokuyo_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <origin xyz="0 ${base_size_y/2} 0.05" rpy="0 0 1.570796"/>
+      <parent link="${parent}"/>
+      <child link="laser"/>
+    </joint>
+  </xacro:macro>
+
+  <gazebo reference="sensor_laser">
+    <sensor type="ray" name="head_hokuyo_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>20</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-1.570796</min_angle>
+            <max_angle>1.570796</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/laser/scan</topicName>
+        <frameName>sensor_laser</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <xacro:sensor_hokuyo parent="base_link"/>
+
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/</robotNamespace>
