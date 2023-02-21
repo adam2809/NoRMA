@@ -84,18 +84,20 @@
   <xacro:wheel wheel_name="left" reflect="-1"/>
   <xacro:wheel wheel_name="right" reflect="1"/>
 
+  <xacro:property name="lidar_radious" value="0.05" />
+  <xacro:property name="lidar_length" value="0.1" />
   <xacro:macro name="sensor_hokuyo" params="parent">
     <link name="sensor_laser">
       <collision>
-        <origin xyz="0.05 0 0" rpy="0 0 0"/>
+        <origin xyz="${lidar_radious} 0 0" rpy="0 0 0"/>
         <geometry>
-          <cylinder radius="0.05" length="0.1"/>
+          <cylinder radius="${lidar_radious}" length="${lidar_length}"/>
         </geometry>
       </collision>
       <visual>
-        <origin xyz="0.05 0 0" rpy="0 0 0"/>
+        <origin xyz="${lidar_radious} 0 0" rpy="0 0 0"/>
         <geometry>
-          <cylinder radius="0.05" length="0.1"/>
+          <cylinder radius="${lidar_radious}" length="${lidar_length}"/>
         </geometry>
       </visual>
       <inertial>
@@ -105,7 +107,7 @@
     </link>
     <joint name="hokuyo_joint" type="fixed">
       <axis xyz="0 0 1" />
-      <origin xyz="0 ${base_size_y/2+1} 0.05" rpy="0 0 1.570796"/>
+      <origin xyz="0 ${base_size_y/2} 0" rpy="0 0 1.570796"/>
       <parent link="${parent}"/>
       <child link="sensor_laser"/>
     </joint>
