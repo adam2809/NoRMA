@@ -15,7 +15,7 @@
   <xacro:property name="base_size_z" value="0.5" />
   <xacro:property name="base_size" value="${base_size_x} ${base_size_y} ${base_size_z}" />
   <xacro:property name="caster_radius" value="0.05" />
-  <link name="dummy">
+  <link name="base_link">
     <visual>
       <geometry>
         <box size="${base_size}"/>
@@ -61,11 +61,6 @@
       </geometry>
     </visual>
   </link>
-  <link name="base_link"></link>
-  <joint name="dummy_joint" type="fixed">
-     <parent link="base_link"/>
-     <child link="dummy"/>
-   </joint>
 
   <xacro:property name="wheel_radious" value="0.1" />
   <xacro:property name="wheel_length" value="0.1" />
