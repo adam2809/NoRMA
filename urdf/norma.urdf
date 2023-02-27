@@ -10,8 +10,8 @@
   </material>
 
   <xacro:property name="base_mass" value="25" />
-  <xacro:property name="base_size_x" value="1.0" />
-  <xacro:property name="base_size_y" value="1.2" />
+  <xacro:property name="base_size_y" value="1.0" />
+  <xacro:property name="base_size_x" value="1.2" />
   <xacro:property name="base_size_z" value="1.5" />
   <xacro:property name="base_size" value="${base_size_x} ${base_size_y} ${base_size_z}" />
   <link name="dummy">
@@ -47,7 +47,7 @@
         <geometry>
           <cylinder length="${wheel_length}" radius="${wheel_radious}"/>
         </geometry>
-        <origin rpy="0 1.57075 0"/>
+        <origin rpy="1.57075 0 0"/>
         <material name="gray"/>
       </visual>
 
@@ -55,7 +55,7 @@
         <geometry>
           <cylinder length="${wheel_length}" radius="${wheel_radious}"/>
         </geometry>
-        <origin rpy="0 1.57075 0"/>
+        <origin rpy="1.57075 0 0"/>
       </collision>
 
       <inertial>
@@ -67,8 +67,8 @@
     <joint name="base_to_${wheel_name}_wheel" type="continuous">
       <parent link="base_link"/>
       <child link="${wheel_name}_wheel"/>
-      <origin xyz="${reflect*(base_size_x+wheel_length)/2} 0 ${-base_size_z/2+wheel_radious-0.01}"/>
-      <axis xyz="1 0 0"/>
+      <origin xyz="0 ${reflect*(base_size_y+wheel_length)/2} ${-base_size_z/2+wheel_radious-0.01}"/>
+      <axis xyz="0 1 0"/>
     </joint>
     <transmission name="${wheel_name}_wheel_trans">
       <type>transmission_interface/SimpleTransmission</type>
@@ -107,7 +107,7 @@
     </link>
     <joint name="hokuyo_joint" type="fixed">
       <axis xyz="0 0 1" />
-      <origin xyz="0 ${base_size_y/2} 0" rpy="0 0 1.570796"/>
+      <origin xyz="${base_size_x/2} 0 0" rpy="0 0 0"/>
       <parent link="${parent}"/>
       <child link="sensor_laser"/>
     </joint>
