@@ -93,11 +93,16 @@
       <child link="${wheel_name}_wheel"/>
       <origin xyz="-0.3 ${reflect*(base_size_y+wheel_length)/2} ${-base_size_z/2}"/>
       <axis xyz="0 1 0"/>
+      <limit effort="10000" velocity="1000"/>
+      <joint_properties damping="1.0" friction="1.0" />
     </joint>
     <transmission name="${wheel_name}_wheel_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <actuator name="${wheel_name}_wheel_motor">
         <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>
+          VelocityJointInterface
+        </hardwareInterface>
       </actuator>
       <joint name="base_to_${wheel_name}_wheel">
         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
