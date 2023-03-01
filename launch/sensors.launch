@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find wheelchair_virtual_joystick_driver)/launch/spatial.launch" />
+  <include file="$(find wheelchair_virtual_joystick_driver)/launch/urg_lidar.launch" />
+</launch>
+
