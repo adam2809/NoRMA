@@ -9,6 +9,32 @@
     <color rgba="0.8 0.8 0.8 1"/>
   </material>
 
+  <xacro:macro name="caster" params="name reflect_x reflect_y">
+    <collision name="${name}_caster_collision">
+      <origin rpy=" 0 0 0" xyz="${reflect_x*(base_size_x/2-caster_radius)} ${reflect_y*(base_size_y/2-caster_radius)} ${-base_size_z/2-caster_radius}"/>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>0</mu>
+            <mu2>0</mu2>
+            <slip1>1.0</slip1>
+            <slip2>1.0</slip2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name="${name}_caster_visual">
+      <origin rpy=" 0 0 0" xyz="${reflect_x*(base_size_x/2-caster_radius)} ${reflect_y*(base_size_y/2-caster_radius)} ${-base_size_z/2-caster_radius}"/>
+      <geometry>
+        <sphere radius="${caster_radius}"/>
+      </geometry>
+    </visual>
+  </xacro:macro>
+
   <xacro:property name="base_mass" value="2" />
   <xacro:property name="base_size_y" value="0.45" />
   <xacro:property name="base_size_x" value="0.8" />
@@ -36,30 +62,10 @@
     
 
 
-    <!-- caster front -->
-    <collision name="caster_collision">
-      <origin rpy=" 0 0 0" xyz="${base_size_x/2-caster_radius} 0 ${-base_size_z/2-caster_radius}"/>
-        <geometry>
-          <sphere radius="${caster_radius}"/>
-        </geometry>
-      <surface>
-        <friction>
-          <ode>
-            <mu>0</mu>
-            <mu2>0</mu2>
-            <slip1>1.0</slip1>
-            <slip2>1.0</slip2>
-          </ode>
-        </friction>
-      </surface>
-    </collision>
-
-    <visual name="caster_front_visual">
-      <origin rpy=" 0 0 0" xyz="${base_size_x/2-caster_radius} 0 ${-base_size_z/2-caster_radius}"/>
-      <geometry>
-        <sphere radius="${caster_radius}"/>
-      </geometry>
-    </visual>
+    <xacro:caster name="rr" reflect_x="-1" reflect_y="-1"/>
+    <xacro:caster name="fr" reflect_x="1" reflect_y="-1"/>
+    <xacro:caster name="fl" reflect_x="1" reflect_y="1"/>
+    <xacro:caster name="rl" reflect_x="-1" reflect_y="1"/>
   </link>
 
   <xacro:property name="wheel_radious" value="0.1" />
@@ -91,7 +97,7 @@
     <joint name="base_to_${wheel_name}_wheel" type="continuous">
       <parent link="base_link"/>
       <child link="${wheel_name}_wheel"/>
-      <origin xyz="-0.3 ${reflect*(base_size_y+wheel_length)/2} ${-base_size_z/2}"/>
+      <origin xyz="0 ${reflect*(base_size_y+wheel_length)/2} ${-base_size_z/2}"/>
       <axis xyz="0 1 0"/>
       <limit effort="10000" velocity="1000"/>
       <joint_properties damping="1.0" friction="1.0" />
