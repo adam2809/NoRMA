@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>wheelchair_virtual_joystick_driver</name>
+  <name>norma_driver</name>
   <version>1.0.0</version>
   <description>Package for the NoRMA virtual joystick driver</description>
 
