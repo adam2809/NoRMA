@@ -1,5 +1,10 @@
 ### Software
 
+- norma measuremets
+  - figure out mapping between joystick position and linear/angular velocity
+  - measure clearences for sonar holder
+  - measure footprint
+
 - develop simulator:
   - simplify by just having a box on two wheels with roughly the same dimensions as the robot 
 
