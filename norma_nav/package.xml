@@ -34,6 +34,7 @@
   <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
   <depend>costmap_2d</depend>
   <depend>tf2</depend>
+  <depend>base_local_planner</depend>
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->
