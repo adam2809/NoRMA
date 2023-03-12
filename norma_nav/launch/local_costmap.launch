@@ -27,4 +27,6 @@
   </node>
 
   <node name="collision_checker_node" pkg="norma_nav" type="collision_checker"></node>
+
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find norma_nav)/rviz/collision_avoidance_config.rviz" />
 </launch>
