@@ -1,6 +1,6 @@
 <launch>
   <include file="$(find norma_bringup)/launch/spatial.launch" />
   <include file="$(find norma_bringup)/launch/urg_lidar.launch" />
-  <node pkg="imu_to_odom" type="imu_to_odom_node" name="imu_to_odom_node">
+  <node pkg="imu_to_odom" type="imu_to_odom_node" name="imu_to_odom_node" />
 </launch>
 

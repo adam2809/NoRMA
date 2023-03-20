@@ -10,7 +10,7 @@
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
     <rosparam file="$(find norma_nav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find norma_nav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find norma_nav)/param/local_costmap_params.yaml" command="load" ns=""local_costmap/>
+    <rosparam file="$(find norma_nav)/param/local_costmap_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find norma_nav)/param/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find norma_nav)/param/move_base_params.yaml" command="load" />
     <rosparam file="$(find norma_nav)/param/dwa_local_planner_params.yaml" command="load" />
