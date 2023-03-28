@@ -19,18 +19,24 @@ socket_bore_radious = holes_radious
 box_width = box_thickness*2 + holes_rect[0] + socket_radious*4 + 1.5
 box_depth = box_thickness*2 + holes_rect[1] + socket_radious*4 + 1.5
 
+port_slot = (cq
+  .Workplane('XZ',(0,box_depth/2,0))
+  .box(port_width,box_height-pcb_size[2],box_thickness*3)
+)
 bottom = (cq
   .Workplane('XY')
   .box(box_width,box_depth,box_height-box_thickness)        
   .faces('+Z')
   .shell(box_thickness)
   .faces('<Z[-2]').workplane()
-  .rect(*holes_rect)
+  .rect(*holes_rect,forConstruction=True)
   .vertices()
   .cylinder(prongs_length,prongs_radious,centered=[True,True,False])
 )
-
-
+cont = (bottom
+  .cut(port_slot)
+)
+show_object(cont)
  #.faces('>Z').workplane()
  #.rect(box_width - box_thickness*2,box_depth - box_thickness*2)
  #.extrude(-box_height+box_thickness,'cut')
