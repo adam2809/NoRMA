@@ -35,6 +35,10 @@
   <depend>costmap_2d</depend>
   <depend>tf2</depend>
   <depend>base_local_planner</depend>
+  <depend>gmapping</depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>map_server</exec_depend>
+  <exec_depend>amcl</exec_depend>
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->
