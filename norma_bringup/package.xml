@@ -49,6 +49,12 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>imu_filter_madgwick</depend>
+  <depend>phidgets_spatial</depend>
+  <depend>nodelet</depend>
+  <depend>urg_node</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>imu_to_odom</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
