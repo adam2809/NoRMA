@@ -1,9 +1,7 @@
 <launch>
   <arg name="model" default="$(find norma_sim)/urdf/norma.urdf"/>
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
-  <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
-    <param name="publish_frequency" type="double" value="30.0" />
-  </node>
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="imu_to_base_transform" args="0 -0.45 0 1.57079632679 0 0 imu_link base_link" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_imu_transform" args="0 0.45 0 3.14159265359 0 0 base_link imu_link" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_rear_laser_transform" args="0 -0.45 0 3.14159265359 0 0 base_link rear_laser" />
 </launch>
