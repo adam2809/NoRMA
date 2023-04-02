@@ -121,8 +121,8 @@
 
   <xacro:property name="lidar_radious" value="0.05" />
   <xacro:property name="lidar_length" value="0.1" />
-  <xacro:macro name="sensor_hokuyo" params="parent">
-    <link name="laser">
+  <xacro:macro name="laser_sensor" params="parent name translation orientation">
+    <link name="laser_${name}">
       <collision>
         <origin xyz="${lidar_radious} 0 0" rpy="0 0 0"/>
         <geometry>
@@ -140,11 +140,11 @@
         <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
       </inertial>
     </link>
-    <joint name="hokuyo_joint" type="fixed">
+    <joint name="laser_${name}_joint" type="fixed">
       <axis xyz="0 0 1" />
-      <origin xyz="${base_size_x/2} 0 0" rpy="0 0 0"/>
+      <origin xyz="${translation}" rpy="${orientation}"/>
       <parent link="${parent}"/>
-      <child link="laser"/>
+      <child link="laser_${name}"/>
     </joint>
   </xacro:macro>
 
@@ -175,12 +175,12 @@
       </ray>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
         <topicName>/scan</topicName>
-        <frameName>laser</frameName>
+        <frameName>laser_rear</frameName>
       </plugin>
     </sensor>
   </gazebo>
 
-  <xacro:sensor_hokuyo parent="base_link"/>
+  <xacro:laser_sensor parent="base_link" name="rear" translation="-0.450 0 0" orientation="0 0 3.14159265359"/>
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
