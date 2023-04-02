@@ -4,4 +4,6 @@
   <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="imu_to_base_transform" args="0 -0.45 0 1.57079632679 0 0 imu_link base_link" />
 </launch>

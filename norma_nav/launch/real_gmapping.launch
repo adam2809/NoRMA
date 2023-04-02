@@ -14,7 +14,6 @@
   </include>
 
   <include file="$(find norma_bringup)/launch/sensors.launch" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="imu_to_base_transform" args="0 0 0 0 0 0 1 imu_link base_link" />
 
   <node pkg="gmapping" type="slam_gmapping" name="norma_gmapping" output="screen">
     <param name="base_frame" value="$(arg base_frame)"/>
