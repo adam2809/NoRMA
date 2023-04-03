@@ -5,15 +5,16 @@
 
   <arg name="base_frame" default="base_link"/>
   <arg name="map_frame"  default="map"/>
+  <arg name="odom_frame"  default="odom"/>
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_rear_laser_transform" args="0 -0.45 0 3.14159265359 0 0 base_link laser_rear" />
 
-  <include file="$(find norma_bringup)/launch/urg_lidar.launch" />
+  <include file="$(find norma_bringup)/launch/sensors.launch" />
+  <include file="$(find norma_bringup)/launch/tf_publisher.launch" />
 
   <include file="$(find hector_mapping)/launch/mapping_default.launch">
     <arg name="base_frame" value="$(arg base_frame)"/>
-    <arg name="odom_frame" value="$(arg base_frame)"/>
-    <arg name="pub_map_odom_transform" value="true"/>
+    <arg name="odom_frame" value="$(arg odom_frame)"/>
+    <arg name="pub_map_odom_transform" value="false"/>
 
     <!-- Topic names -->
     <arg name="scan_topic" value="/scan" />
