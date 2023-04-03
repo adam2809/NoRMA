@@ -1,4 +1,4 @@
 <launch>
   <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_imu_transform" args="0 0.45 0 3.14159265359 0 0 imu_link base_link" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_rear_laser_transform" args="0 -0.45 0 3.14159265359 0 0 base_link laser_rear" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_rear_laser_transform" args="0 -0.45 0 -1.57079632679 0 0 base_link laser_rear" />
 </launch>
