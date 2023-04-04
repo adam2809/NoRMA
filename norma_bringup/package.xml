@@ -54,7 +54,7 @@
   <depend>nodelet</depend>
   <depend>urg_node</depend>
   <depend>robot_state_publisher</depend>
-  <depend>imu_to_odom</depend>
+  <exec_depend>rplidar_ros</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
