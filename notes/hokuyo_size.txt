@@ -4,3 +4,11 @@ internal diagonal holes 54
 external diagonal holes 59
 base height 41
 height 70
+
+
+screw_head_radious 3.5
+screw_hole_radious 2
+
+rail_radious 17.5
+
+screw hole to end of stuff 94
