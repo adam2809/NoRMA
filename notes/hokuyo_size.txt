@@ -1,0 +1,6 @@
+upper lip 48
+lower lip 50
+internal diagonal holes 54 
+external diagonal holes 59
+base height 41
+height 70
