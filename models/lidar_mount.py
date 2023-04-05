@@ -1,7 +1,8 @@
-
+from cadquery import exporters
 lidar_box_width = 50
 lidar_box_depth = 50
 lidar_box_height = 41
+lidar_box_thick = 2.4
 
 rail_mount_ir = 35/2
 rail_mount_er = 38.4/2
@@ -58,7 +59,7 @@ with_holes = (rail_mount
   .hole(3,10)
 )
 
-lidar_attachment = (cq
+lidar_rod = (cq
   .Workplane('XY')
   .box(rod_length,rod_thick,rod_thick)
   .faces('>X').workplane(centerOption='CenterOfMass')
@@ -71,5 +72,32 @@ lidar_attachment = (cq
   .cboreHole(3,6.5,14)
 )
 
-show_object(lidar_attachment)
-#debug(cbore)
+cutout_lidar_box = (cq
+  .Workplane(origin=(0,0,-(lidar_box_height/2-lidar_box_thick)))
+  .cylinder(1000,lidar_box_width/2,centered=[True,True,False])
+)
+
+ 
+
+lidar_attachment = (cq
+  .Workplane(origin=(0,0,-(lidar_box_height+lidar_box_thick)/2))
+  .box(lidar_box_width/2+lidar_box_thick+gopro_mount_length,gopro_mount_thick,rod_thick,centered=[False,True,False])
+  .faces('>Y').workplane(centerOption='CenterOfMass')
+  .center(-(lidar_box_width/2+lidar_box_thick+gopro_mount_length)/2+(gopro_mount_length-gopro_mount_hole_offset),0)
+  .hole(3)
+)
+
+lidar_popout = (cq
+  .Workplane(origin=(0,0,-(lidar_box_height/2-lidar_box_thick)))
+  .cylinder(1000,7)
+)
+
+lidar_box = (cq
+  .Workplane('XY')
+  .cylinder(lidar_box_height+lidar_box_thick,lidar_box_width/2+0.1+lidar_box_thick)
+) + lidar_attachment  - cutout_lidar_box -lidar_popout
+
+exporters.export(lidar_box,'stls/lidar_box.stl')
+exporters.export(lidar_rod,'stls/lidar_rod.stl')
+exporters.export(with_holes,'stls/rail_mount.stl')
+#debug(lidar_attachment)
