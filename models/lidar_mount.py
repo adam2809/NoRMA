@@ -15,7 +15,12 @@ screw_head_radious = 3.5
 screw_hole_radious = 2
 cbore_length = 1
 
+rod_length = 94+rail_mount_length/2
+rod_thick = 20
 
+gopro_mount_length = 30
+gopro_mount_hole_offset = 20
+gopro_mount_thick = 6
 #screw hole to end of stuff 94
 
 screw_hole = (cq
@@ -52,5 +57,19 @@ with_holes = (rail_mount
   .pushPoints([[-rail_mount_length/3,0],[rail_mount_length/3,0]])
   .hole(3,10)
 )
-show_object(with_holes)
+
+lidar_attachment = (cq
+  .Workplane('XY')
+  .box(rod_length,rod_thick,rod_thick)
+  .faces('>X').workplane(centerOption='CenterOfMass')
+  .box(gopro_mount_thick,rod_thick,gopro_mount_length,centered=[True,True,False])
+  .faces('>Y[1]').workplane(centerOption='CenterOfMass')
+  .center(gopro_mount_hole_offset-gopro_mount_length/2,0)
+  .hole(3)
+  .faces('>Y').workplane(centerOption='CenterOfMass')
+  .pushPoints([[-rail_mount_length/3,0],[rail_mount_length/3,0]])
+  .cboreHole(3,6.5,14)
+)
+
+show_object(lidar_attachment)
 #debug(cbore)
