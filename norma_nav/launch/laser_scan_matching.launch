@@ -13,8 +13,6 @@
 
   <include file="$(find norma_bringup)/launch/sensors.launch" />
 
-  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
-  
   <group if="true">
     <param name="laser_scan_matcher_node/do_compute_covariance" value="1"/>
     <param name="laser_scan_matcher_node/publish_pose_with_covariance" value="true"/>
@@ -24,12 +22,14 @@
 
     <param name="max_iterations" value="10"/>
 
-    <param name="fixed_frame" value="$(arg map_frame)"/>
+    <param name="fixed_frame" value="world"/>
     <param name="base_frame" value="$(arg base_frame)"/>
 
     <param name="use_imu" value="true"/>
     <param name="use_odom" value="false"/>
     <param name="use_vel" value="false"/>
+
+    <param name="use_cloud_input" value="true"/>
   </node>
 
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find norma_nav)/rviz/gmapping.rviz" />
