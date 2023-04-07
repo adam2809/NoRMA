@@ -1,9 +1,15 @@
 <launch>
+  <arg name="run_imu_to_odom" default="false"/>
+
   <include file="$(find norma_bringup)/launch/spatial.launch" />
-  <include file="$(find norma_bringup)/launch/urg_lidar.launch">
-    <arg name="serial_port" value="/dev/ttyACM0" />
-    <arg name="frame_id" value="laser_rear"/>
-  </include>
-  <node pkg="imu_to_odom" type="imu_to_odom_node" name="imu_to_odom_node" />
+  <include file="$(find norma_bringup)/launch/lidars.launch" />
+
+  
+  <node pkg="norma_bringup" type="merge_scans" name="merge_scans" />
+
+  <group if="$(arg run_imu_to_odom)">
+    <node pkg="imu_to_odom" type="imu_to_odom_node" name="imu_to_odom_node" />
+  </group>
+
 </launch>
 
