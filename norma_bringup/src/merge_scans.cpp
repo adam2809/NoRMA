@@ -6,7 +6,7 @@
 #include "sensor_msgs/PointCloud2.h"
 #include "sensor_msgs/point_cloud2_iterator.h"
 #include "laser_geometry/laser_geometry.h"
-
+#include <tf/transform_listener.h>
 #include <pcl_ros/point_cloud.h>
 
 float min_ang_, max_ang_, range_min_, range_max_;
@@ -17,6 +17,7 @@ sensor_msgs::PointCloud2 cloud_2;
 sensor_msgs::PointCloud2 concatenated_cloud;
 sensor_msgs::LaserScan concatenated_scan;
 laser_geometry::LaserProjection projector_;
+tf::TransformListener tfListener_;
 
 void chatterCallback_4(const sensor_msgs::LaserScan &msg)
 {
@@ -88,34 +89,35 @@ void concat_with_pc()
     while (ros::ok())
     {
 
-        boost::shared_ptr<sensor_msgs::PointCloud2 const> sharedPtr;
-        sensor_msgs::LaserScan scan_tim_4;
-        sharedPtr = ros::topic::waitForMessage<sensor_msgs::PointCloud2>("/tim_4_cloud", ros::Duration(1));
-        if (sharedPtr == NULL)
-            ROS_INFO("No laser messages received");
-        else
-            cloud_1 = *sharedPtr;
-        sensor_msgs::LaserScan scan_tim_8;
+        boost::shared_ptr<sensor_msgs::LaserScan const> scan_ptr;
+        sensor_msgs::PointCloud2 cloud_rear;
+        sensor_msgs::PointCloud2 cloud_front;
+        sensor_msgs::PointCloud2 cloud_merged;
 
-        sharedPtr = ros::topic::waitForMessage<sensor_msgs::PointCloud2>("/tim_8_cloud", ros::Duration(1));
-        if (sharedPtr == NULL)
-            ROS_INFO("No laser messages received");
-        else
-            cloud_2 = *sharedPtr;
+        scan_ptr = ros::topic::waitForMessage<sensor_msgs::LaserScan>("/scan_laser_rear", ros::Duration(1));
+        projector_.transformLaserScanToPointCloud("base_link", *scan_ptr, cloud_rear, tfListener_);
 
-        pcl::concatenatePointCloud(cloud_1, cloud_2, concatenated_cloud);
+        if (scan_ptr == NULL)
+            ROS_INFO("No laser messages received from the rear");
+            return;
+
+        scan_ptr = ros::topic::waitForMessage<sensor_msgs::LaserScan>("/scan_laser_front", ros::Duration(1));
+        projector_.transformLaserScanToPointCloud("base_link", *scan_ptr, cloud_front, tfListener_);
+
+        if (scan_ptr == NULL)
+            ROS_INFO("No laser messages received from the front");
+            return;
+
+        pcl::concatenatePointCloud(cloud_rear, cloud_front, concatenated_cloud);
         concatenated_cloud.fields[3].name = "intensity";
         concatenated_cloud.header.frame_id = "base_link";
         cloud_pub_.publish(concatenated_cloud);
-
-        concatenated_scan = *pointcloud_to_laserscan(&concatenated_cloud);
-        scan_pub_.publish(concatenated_scan);
     }
 }
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "listener");
+    ros::init(argc, argv, "scan_merger");
     ros::NodeHandle n;
     scan_pub_ = n.advertise<sensor_msgs::LaserScan>("concatenated_scan", 1);
     cloud_pub_ = n.advertise<sensor_msgs::PointCloud2>("concatenated_cloud", 1);
@@ -127,6 +129,8 @@ int main(int argc, char **argv)
     n.getParam("range_min", range_min_);
     n.getParam("range_max", range_max_);
     n.getParam("frame_id", frame_id_);
+
+    tfListener_.setExtrapolationLimit(ros::Duration(0.1));
 
     concat_with_pc();
 }

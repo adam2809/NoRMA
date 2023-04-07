@@ -58,6 +58,7 @@
   <depend>roscpp</depend>
   <depend>pcl_ros</depend>
   <depend>catkin_simple</depend>
+  <depend>laser_geometry</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

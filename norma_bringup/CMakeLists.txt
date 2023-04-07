@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(norma_bringup)
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED laser_geometry)
 
-find_package(catkin_simple 0.1.0 REQUIRED)
+find_package(catkin_simple REQUIRED)
 catkin_simple(ALL_DEPS_REQUIRED)
 
 
