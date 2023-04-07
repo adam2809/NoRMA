@@ -55,7 +55,9 @@
   <depend>urg_node</depend>
   <depend>robot_state_publisher</depend>
   <exec_depend>rplidar_ros</exec_depend>
-
+  <depend>roscpp</depend>
+  <depend>pcl_ros</depend>
+  <depend>catkin_simple</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
