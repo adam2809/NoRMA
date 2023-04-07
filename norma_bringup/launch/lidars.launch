@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find norma_bringup)/launch/urg_lidar.launch">
+    <arg name="serial_port" value="/dev/ttyACM0" />
+    <arg name="frame_id" value="laser_rear"/>
+  </include> 
+
+  <include file="$(find norma_bringup)/launch/urg_lidar.launch">
+    <arg name="serial_port" value="/dev/ttyACM1" />
+    <arg name="frame_id" value="laser_front"/>
+  </include> 
+
+  <include file="$(find norma_bringup)/launch/tf_publisher.launch"/>
+</launch>
