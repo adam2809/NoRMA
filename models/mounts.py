@@ -115,11 +115,13 @@ rail_mount_length = 55
 rail_mount_gap = rail_mount_width/3
 
 rail_mount_screw_hole_length = 8
-rail_mount_screw_hole_r = 7/2
+rail_mount_screw_hole_r = 8/2
 rail_mount_screw_stickout_length = 7
 rail_mount_cbore_length = 1
 
 m3_hole_r = 3.1/2
+m3_nut_d = 6.3
+m3_nut_length = 2.2
 
 def rail_mount():
     res = (cq
@@ -133,28 +135,42 @@ def rail_mount():
       .box(rail_mount_screw_hole_r*2,rail_mount_screw_stickout_length*2,rail_mount_gap+rail_mount_screw_hole_length*2)
       #.cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,m3_hole_r)
     )
-    screw_holes_circle = (cq
-      .Workplane()
-      .rect(rail_mount_length/2,rail_mount_width+rail_mount_screw_stickout_length*2)
-      .vertices()
+
+    def get_holes_rect(z_offset=0): 
+        return (cq
+          .Workplane(origin=(0,0,z_offset))
+          .rect(rail_mount_length/2,rail_mount_width+rail_mount_screw_stickout_length*2,forConstruction=True)
+          .vertices()
+        )
+
+    screw_holes_circle = (
+      get_holes_rect()
       .cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,rail_mount_screw_hole_r)
     )
-    screw_holes_holes = (cq
-      .Workplane()
-      .rect(rail_mount_length/2,rail_mount_width+rail_mount_screw_stickout_length*2)
+
+    screw_holes_holes = (
+      get_holes_rect()
       .vertices()
       .cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,m3_hole_r)
+    )
+
+    screw_holes_hex = (
+      get_holes_rect(-(rail_mount_gap/2+rail_mount_screw_hole_length))
+      .vertices()
+      .polygon(6,m3_nut_d)
+      .extrude(m3_nut_length)
     )
     
     for m in gopro_mount(0):
         res += m.translate((0,0,rail_mount_width/2))
     show_object(
-      res+
-      screw_holes_base+
-      screw_holes_circle-
-      screw_holes_holes-
-      cq.Workplane().box(1000,1000,rail_mount_gap)-
-      cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
+      res
+      +screw_holes_base
+      +screw_holes_circle
+      -screw_holes_holes
+      -screw_holes_hex
+      -cq.Workplane().box(1000,1000,rail_mount_gap)
+      -cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
     )
     return res
 
