@@ -32,24 +32,26 @@ def mount_part(wp,is_nut):
 
     res = res
     return res
-#mount = (cq
-#  .Workplane('XY')
-#  .box(outer_radius*2,thickness,base_height,centered=[True,True,False])
-#  .faces('+Y').workplane(centerOption='CenterOfMass',offset=-thickness)
-#  .center(0,base_height/2)
-#  .cylinder(thickness,outer_radius,centered=[True,True,False])
-#  .faces('+Y').workplane(centerOption='CenterOfBoundBox')
-#  .center(0,-(base_height+outer_radius)/2+base_height)
-#  .hole(hole_r)
-#)
-parts = []
-origin_y = -(gap+thickness)
 
-mount = (cq
-  .Workplane('XY',origin=(0,0,0))
-)
-mount = mount_part(mount,False)
-origin_y += gap+thickness
+def gopro_mount(get_wp):
+    origin_y = -(gap+thickness)
 
-show_object(mount)
+    mount = (cq
+      .Workplane('XY',origin=(0,origin_y,0))
+    )
+    mount = mount_part(mount,False)
+    origin_y += gap+thickness
+    show_object(mount)
 
+    mount = (cq
+      .Workplane('XY',origin=(0,origin_y,0))
+    )
+    mount = mount_part(mount,False)
+    origin_y += gap+thickness
+    show_object(mount)
+
+    mount = (cq
+      .Workplane('XY',origin=(0,origin_y,0))
+    )
+    mount = mount_part(mount,True)
+    show_object(mount)
