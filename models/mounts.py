@@ -33,11 +33,14 @@ def mount_part(wp,origin,is_nut):
     res = res
     return res
 
-def gopro_mount(rot_hole):
-    origin_y = -(gap+thickness)
+def gopro_mount(rot_hole,parts=3):
+    if parts == 3:
+        origin_y = -(gap+thickness)
+    else:
+        origin_y = -gap + (gap-thickness)/2
     nut_truth = [False,False,True]
     res = []
-    for i in range(3):
+    for i in range(parts):
         origin = (0,origin_y,0)
         wp = cq.Workplane(origin=origin)
         mount = mount_part(wp,origin,nut_truth[i])
@@ -55,9 +58,10 @@ def rod():
       .Workplane()
       .box(rod_width,rod_depth,rod_height/2,centered=[True,True,False])
     ) 
-    for part in gopro_mount(rod_height/2):
+    for part in gopro_mount(0):
+        part=part.translate((0,0,rod_height/2))
         res+=part
-    res+=rod.mirror('XY')
+    res+=res.mirror('XY')
     return res
 
 
@@ -114,5 +118,5 @@ def lidar_box():
         res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2+0.15))
     return res
 
-
-show_object(lidar_box())
+show_object(gopro_mount(0,2))
+show_object(gopro_mount(0,3))
