@@ -94,9 +94,6 @@ def lidar_box():
       .rect(lidar_box_width_i,lidar_box_width_i)
       .cutBlind(-lidar_box_height_i)
     )
-    mount_list = gopro_mount(90)
-    for mnt in mount_list:
-        res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2))
     res = (res
       .faces('>Y').workplane()
       .center(0,-lidar_box_height_i/2+lidar_box_thick/2)
@@ -111,6 +108,10 @@ def lidar_box():
       
     )
 
+    mount_list = gopro_mount(90)
+    for mnt in mount_list:
+        mnt = mnt.rotate((0,0,base_height),(1,0,base_height),90)
+        res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2+0.15))
     return res
 
 
