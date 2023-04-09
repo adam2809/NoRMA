@@ -66,15 +66,6 @@ def rod():
 
 
 
-rail_mount_ir = 35/2
-rail_mount_er = 38.4/2
-rail_mount_length = 55
-
-
-
-screw_head_radious = 3.5
-screw_hole_radious = 2
-cbore_length = 1
 
 lidar_box_width_i = 50.2
 lidar_box_height_i = 41
@@ -118,4 +109,54 @@ def lidar_box():
         res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2+0.15))
     return res
 
-show_object(rod())
+rail_mount_ir = 35.5/2
+rail_mount_width = 40
+rail_mount_length = 55
+rail_mount_gap = rail_mount_width/3
+
+rail_mount_screw_hole_length = 8
+rail_mount_screw_hole_r = 7/2
+rail_mount_screw_stickout_length = 7
+rail_mount_cbore_length = 1
+
+m3_hole_r = 3.1/2
+
+def rail_mount():
+    res = (cq
+      .Workplane()
+      .box(rail_mount_length,rail_mount_width,rail_mount_width)
+    )
+    screw_holes_base = (cq
+      .Workplane()
+      .rect(rail_mount_length/2,rail_mount_width)
+      .vertices()
+      .box(rail_mount_screw_hole_r*2,rail_mount_screw_stickout_length*2,rail_mount_gap+rail_mount_screw_hole_length*2)
+      #.cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,m3_hole_r)
+    )
+    screw_holes_circle = (cq
+      .Workplane()
+      .rect(rail_mount_length/2,rail_mount_width+rail_mount_screw_stickout_length*2)
+      .vertices()
+      .cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,rail_mount_screw_hole_r)
+    )
+    screw_holes_holes = (cq
+      .Workplane()
+      .rect(rail_mount_length/2,rail_mount_width+rail_mount_screw_stickout_length*2)
+      .vertices()
+      .cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,m3_hole_r)
+    )
+    
+    for m in gopro_mount(0):
+        res += m.translate((0,0,rail_mount_width/2))
+    show_object(
+      res+
+      screw_holes_base+
+      screw_holes_circle-
+      screw_holes_holes-
+      cq.Workplane().box(1000,1000,rail_mount_gap)-
+      cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
+    )
+    return res
+
+
+rail_mount()
