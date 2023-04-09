@@ -1,3 +1,5 @@
+from cadquery import exporters
+
 thickness = 3.02
 gap = 3.12
 hole_r = 5.09/2+0.2
@@ -161,18 +163,32 @@ def rail_mount():
       .extrude(m3_nut_length)
     )
     
-    for m in gopro_mount(0):
-        res += m.translate((0,0,rail_mount_width/2))
-    show_object(
-      res
-      +screw_holes_base
+    res += (
+       screw_holes_base
       +screw_holes_circle
       -screw_holes_holes
       -screw_holes_hex
-      -cq.Workplane().box(1000,1000,rail_mount_gap)
-      -cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
+      
     )
-    return res
+    for m in gopro_mount(0):
+        res += m.translate((0,0,rail_mount_width/2))
 
+    (top,bottom) = (res
+      .faces('<Z').workplane(offset=-rail_mount_width/2)
+      .split(keepBottom=True,keepTop=True)
+      .all()
+    )
+    top -= cq.Workplane().box(1000,1000,rail_mount_gap) + cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
+    bottom -= cq.Workplane().box(1000,1000,rail_mount_gap) + cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
 
-rail_mount()
+    return [top,bottom]
+
+show_object(rail_mount())
+
+export = 0
+if export == 1:
+    exporters.export(rod(),'stls/rod.stl')
+    exporters.export(lidar_box(),'stls/lidar_box.stl')
+    exporters.export(rail_mount()[0],'stls/rail_mount_top.stl')
+    exporters.export(rail_mount()[1],'stls/rail_mount_bottom.stl')
+
