@@ -33,28 +33,85 @@ def mount_part(wp,origin,is_nut):
     res = res
     return res
 
-def gopro_mount(origin_z):
+def gopro_mount(rot_hole):
     origin_y = -(gap+thickness)
     nut_truth = [False,False,True]
     res = []
     for i in range(3):
-        origin = (0,origin_y,origin_z)
+        origin = (0,origin_y,0)
         wp = cq.Workplane(origin=origin)
         mount = mount_part(wp,origin,nut_truth[i])
+        mount = mount.rotate((0,0,base_height),(0,1,base_height),rot_hole)
         origin_y += gap+thickness
-        res.append(mount)#.rotateAboutCenter((0,1,0),180)
+        res.append(mount)
     return res
 
 rod_width = 20
 rod_depth = rod_width
 rod_height = 180
 
-rod = (cq
-  .Workplane()
-  .box(rod_width,rod_depth,rod_height/2,centered=[True,True,False])
-) 
-for part in gopro_mount(rod_height/2):
-    rod+=part
-rod+=rod.mirror('XY')
+def rod():
+    res = (cq
+      .Workplane()
+      .box(rod_width,rod_depth,rod_height/2,centered=[True,True,False])
+    ) 
+    for part in gopro_mount(rod_height/2):
+        res+=part
+    res+=rod.mirror('XY')
+    return res
 
 
+
+rail_mount_ir = 35/2
+rail_mount_er = 38.4/2
+rail_mount_length = 55
+
+
+
+screw_head_radious = 3.5
+screw_hole_radious = 2
+cbore_length = 1
+
+lidar_box_width_i = 50.2
+lidar_box_height_i = 41
+lidar_box_thick = 2.4
+
+lidar_box_width = lidar_box_width_i + lidar_box_thick*2
+lidar_box_height = lidar_box_height_i + lidar_box_thick
+
+lidar_box_internal_diagonal_holes = 54 
+lidar_box_external_diagonal_holes = 59
+
+m25_head_diameter = 5
+m25_hole_diameter = 2.7
+
+def lidar_box():
+
+    res = (cq
+      .Workplane()
+      .box(lidar_box_width,lidar_box_width,lidar_box_height)
+      .faces('>Z')
+      .rect(lidar_box_width_i,lidar_box_width_i)
+      .cutBlind(-lidar_box_height_i)
+    )
+    mount_list = gopro_mount(90)
+    for mnt in mount_list:
+        res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2))
+    res = (res
+      .faces('>Y').workplane()
+      .center(0,-lidar_box_height_i/2+lidar_box_thick/2)
+      .rect(lidar_box_width_i/2,lidar_box_height_i/2,centered=False)
+      .cutBlind(-lidar_box_thick)
+    )
+    res = (res
+      .faces('<Z').workplane(centerOption='CenterOfBoundBox').transformed(rotate=(0,0,45))
+      .polygon(4,(lidar_box_external_diagonal_holes+lidar_box_internal_diagonal_holes)/2)
+      .vertices()
+      .cboreHole(m25_hole_diameter,m25_head_diameter,1)
+      
+    )
+
+    return res
+
+
+show_object(lidar_box())
