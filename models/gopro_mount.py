@@ -33,15 +33,28 @@ def mount_part(wp,origin,is_nut):
     res = res
     return res
 
-def gopro_mount(origin_x):
+def gopro_mount(origin_z):
     origin_y = -(gap+thickness)
     nut_truth = [False,False,True]
     res = []
     for i in range(3):
-        origin = (origin_x,origin_y,0)
+        origin = (0,origin_y,origin_z)
         wp = cq.Workplane(origin=origin)
         mount = mount_part(wp,origin,nut_truth[i])
         origin_y += gap+thickness
         res.append(mount)#.rotateAboutCenter((0,1,0),180)
     return res
+
+rod_width = 20
+rod_depth = rod_width
+rod_height = 180
+
+rod = (cq
+  .Workplane()
+  .box(rod_width,rod_depth,rod_height/2,centered=[True,True,False])
+) 
+for part in gopro_mount(rod_height/2):
+    rod+=part
+rod+=rod.mirror('XY')
+
 
