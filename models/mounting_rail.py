@@ -15,7 +15,7 @@ clamp_whole = (cq
   .rect(rail_height,rail_depth)
   .cutThruAll()
 )
-#show_object(clamp_whole)
+show_object(clamp_whole)
 cont = (clamp_whole
   .faces('>Z').workplane(centerOption='CenterOfMass')
   .pushPoints([
@@ -25,4 +25,4 @@ cont = (clamp_whole
   .rect(bolt_piece_width/2,bolt_piece_depth*2)
 )
 
-show_object(cont)
+debug(cont)
