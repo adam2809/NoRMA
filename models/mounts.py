@@ -4,7 +4,6 @@ thickness = 3.02
 gap = 3.12
 hole_r = 5.09/2+0.2
 outer_radius = 14.88/2
-slot_depth = 15.66
 base_height = 15
 hole_height = 10
 nut_diameter = 9
@@ -51,19 +50,37 @@ def gopro_mount(rot_hole,parts=3):
         res.append(mount)
     return res
 
+def get_gopro_mount_width(parts):
+    return thickness*(parts-1) + gap*parts
+
 rod_width = 20
 rod_depth = rod_width
 rod_height = 180
-
+rod_taper_offset = 30
 def rod():
     res = (cq
       .Workplane()
-      .box(rod_width,rod_depth,rod_height/2,centered=[True,True,False])
+      .box(rod_width,rod_depth,rod_height,centered=[True,True,False])
     ) 
+    res = (res
+      .faces('<Z').workplane(offset=-rod_height+rod_taper_offset)
+      .rect(rod_width,rod_width)
+      .workplane(offset=-rod_height-(-rod_height+rod_taper_offset))
+      .rect(rod_width,get_gopro_mount_width(2)*2+rod_width)
+      .loft(combine=True)
+    )
+
+    mount_y_pos = rod_width/2+get_gopro_mount_width(2)/2 - gap
     for part in gopro_mount(0,2):
-        part=part.translate((0,0,rod_height/2))
+        part=part.translate((0,mount_y_pos,rod_height))
         res+=part
-    res+=res.mirror('XY').rotateAboutCenter((0,0,1),90)
+    for part in gopro_mount(0,2):
+        part=part.translate((0,-mount_y_pos,rod_height))
+        res+=part
+    for part in gopro_mount(180,2):
+        part=part.translate((0,0,-base_height*2))
+        part = part.rotate((0,0,1),(0,0,0),90)
+        res+=part
     return res
 
 
@@ -182,8 +199,14 @@ def rail_mount():
     bottom -= cq.Workplane().box(1000,1000,rail_mount_gap) + cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
 
     return [top,bottom]
-
-show_object(rail_mount())
+res = (cq
+  .Workplane()
+  .rect(0.75,1.5)
+  .workplane(offset=3.0)
+  .rect(0.75, 0.5)
+  .loft(combine=True)
+)
+show_object(rod())
 
 export = 0
 if export == 1:
