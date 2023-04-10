@@ -57,6 +57,7 @@ rod_width = 20
 rod_depth = rod_width
 rod_height = 180
 rod_taper_offset = 30
+dual_mount_y_offset = (rod_width+get_gopro_mount_width(3))/2
 def rod():
     res = (cq
       .Workplane()
@@ -66,16 +67,15 @@ def rod():
       .faces('<Z').workplane(offset=-rod_height+rod_taper_offset)
       .rect(rod_width,rod_width)
       .workplane(offset=-rod_height-(-rod_height+rod_taper_offset))
-      .rect(rod_width,get_gopro_mount_width(2)*2+rod_width)
+      .rect(rod_width,get_gopro_mount_width(3)*2+rod_width)
       .loft(combine=True)
     )
 
-    mount_y_pos = rod_width/2+get_gopro_mount_width(2)/2 - gap
     for part in gopro_mount(0,2):
-        part=part.translate((0,mount_y_pos,rod_height))
+        part=part.translate((0,dual_mount_y_offset,rod_height))
         res+=part
     for part in gopro_mount(0,2):
-        part=part.translate((0,-mount_y_pos,rod_height))
+        part=part.translate((0,-dual_mount_y_offset,rod_height))
         res+=part
     for part in gopro_mount(180,2):
         part=part.translate((0,0,-base_height*2))
@@ -129,7 +129,7 @@ def lidar_box():
     return res
 
 rail_mount_ir = 35.5/2
-rail_mount_width = 40
+rail_mount_width = rod_width+2*get_gopro_mount_width(3)
 rail_mount_length = 55
 rail_mount_gap = rail_mount_width/3
 
@@ -188,7 +188,11 @@ def rail_mount():
       
     )
     for m in gopro_mount(0):
-        res += m.translate((0,0,rail_mount_width/2))
+        res += m.translate((0,dual_mount_y_offset,rail_mount_width/2))
+
+    for m in gopro_mount(0):
+        m = m.rotate((0,0,1),(0,0,0),180)
+        res += m.translate((0,-dual_mount_y_offset,rail_mount_width/2))
 
     (top,bottom) = (res
       .faces('<Z').workplane(offset=-rail_mount_width/2)
@@ -206,9 +210,9 @@ res = (cq
   .rect(0.75, 0.5)
   .loft(combine=True)
 )
-show_object(rod())
+show_object(rail_mount())
 
-export = 0
+export = 1
 if export == 1:
     exporters.export(rod(),'stls/rod.stl')
     exporters.export(lidar_box(),'stls/lidar_box.stl')
