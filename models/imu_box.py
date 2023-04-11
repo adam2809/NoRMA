@@ -1,3 +1,6 @@
+from mounts import *
+import cq
+
 pcb_size = [30,35,1.2]
 holes_rect = [23,28]
 holes_radious = 1.5

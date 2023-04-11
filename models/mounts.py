@@ -59,7 +59,6 @@ rod_width = 20
 rod_depth = rod_width
 rod_height = 180
 rod_taper_offset = 30
-dual_mount_y_offset = (rod_width+get_gopro_mount_width(3))/2
 def rod():
     res = (cq
       .Workplane()
@@ -133,7 +132,7 @@ def lidar_box():
 rail_mount_ir = 35.5/2
 rail_mount_width = rod_width+2*get_gopro_mount_width(3)
 rail_mount_length = 55
-rail_mount_gap = rail_mount_width/3
+caster_rail_mount_gap = rail_mount_width/3
 
 rail_mount_screw_hole_length = 8
 rail_mount_screw_hole_r = 8/2
@@ -144,39 +143,39 @@ m3_hole_r = 3.1/2
 m3_nut_d = 6.3
 m3_nut_length = 2.2
 
-def rail_mount():
+def rail_mount(width,gap,to_subtract,mount_count=2,is_vertical_mount=True):
     res = (cq
       .Workplane()
-      .box(rail_mount_length,rail_mount_width,rail_mount_width)
+      .box(rail_mount_length,width,width)
     )
     screw_holes_base = (cq
       .Workplane()
-      .rect(rail_mount_length/2,rail_mount_width)
+      .rect(rail_mount_length/2,width)
       .vertices()
-      .box(rail_mount_screw_hole_r*2,rail_mount_screw_stickout_length*2,rail_mount_gap+rail_mount_screw_hole_length*2)
-      #.cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,m3_hole_r)
+      .box(rail_mount_screw_hole_r*2,rail_mount_screw_stickout_length*2,gap+rail_mount_screw_hole_length*2)
+      #.cylinder(gap+rail_mount_screw_hole_length*2,m3_hole_r)
     )
 
     def get_holes_rect(z_offset=0): 
         return (cq
           .Workplane(origin=(0,0,z_offset))
-          .rect(rail_mount_length/2,rail_mount_width+rail_mount_screw_stickout_length*2,forConstruction=True)
+          .rect(rail_mount_length/2,width+rail_mount_screw_stickout_length*2,forConstruction=True)
           .vertices()
         )
 
     screw_holes_circle = (
       get_holes_rect()
-      .cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,rail_mount_screw_hole_r)
+      .cylinder(gap+rail_mount_screw_hole_length*2,rail_mount_screw_hole_r)
     )
 
     screw_holes_holes = (
       get_holes_rect()
       .vertices()
-      .cylinder(rail_mount_gap+rail_mount_screw_hole_length*2,m3_hole_r)
+      .cylinder(gap+rail_mount_screw_hole_length*2,m3_hole_r)
     )
 
     screw_holes_hex = (
-      get_holes_rect(-(rail_mount_gap/2+rail_mount_screw_hole_length))
+      get_holes_rect(-(gap/2+rail_mount_screw_hole_length))
       .vertices()
       .polygon(6,m3_nut_d)
       .extrude(m3_nut_length)
@@ -189,20 +188,28 @@ def rail_mount():
       -screw_holes_hex
       
     )
-    for m in gopro_mount(0):
-        res += m.translate((0,dual_mount_y_offset,rail_mount_width/2))
+
+    dual_mount_y_offset = (rod_width+get_gopro_mount_width(3))/2 if mount_count == 2 else 0
+
+    rotation = 180 if is_vertical_mount else 90
+    
 
     for m in gopro_mount(0):
-        m = m.rotate((0,0,1),(0,0,0),180)
-        res += m.translate((0,-dual_mount_y_offset,rail_mount_width/2))
+        m = m.rotate((0,0,1),(0,0,0),rotation)
+        res += m.translate((0,-dual_mount_y_offset,width/2))
+
+    if mount_count == 2:
+        for m in gopro_mount(0):
+            res += m.translate((0,dual_mount_y_offset,width/2))
+
 
     (top,bottom) = (res
-      .faces('<Z').workplane(offset=-rail_mount_width/2)
+      .faces('<Z').workplane(offset=-width/2)
       .split(keepBottom=True,keepTop=True)
       .all()
     )
-    top -= cq.Workplane().box(1000,1000,rail_mount_gap) + cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
-    bottom -= cq.Workplane().box(1000,1000,rail_mount_gap) + cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
+    top -= cq.Workplane().box(1000,1000,gap) + to_subtract
+    bottom -= cq.Workplane().box(1000,1000,gap) + to_subtract
 
     return [top,bottom]
 
@@ -291,7 +298,34 @@ def imu_box():
         bottom+=p.rotate((0,0,1),(0,0,0),90).translate((0,-(base_height+box_depth/2),-outer_radius*2))
     return [lid,bottom]
 
-export = 1
+
+
+def caster_dual_rail_mount():
+    return rail_mount(
+        rail_mount_width,
+        caster_rail_mount_gap,
+        cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
+    )
+
+rear_rail_mount_height = 30
+rear_rail_mount_depth = 30
+rear_rail_mount_width_e = 33
+rear_rail_mount_gap = rear_rail_mount_width_e/3
+def rear_rail_mount():
+    return rail_mount(
+        rear_rail_mount_width_e,
+        rear_rail_mount_gap,
+        cq.Workplane('YZ').box(rear_rail_mount_depth,rear_rail_mount_height,1000),
+        1,False
+    )
+#m5x20 - 10
+#m3x32 - 10
+#m2.5  - 5
+show_object(rear_rail_mount())
+#show_object(caster_dual_rail_mount())
+
+
+export = 0
 if export == 1:
     exporters.export(rod(),'stls/rod.stl')
     exporters.export(lidar_box(),'stls/lidar_box.stl')
