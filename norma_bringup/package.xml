@@ -59,6 +59,7 @@
   <depend>pcl_ros</depend>
   <depend>catkin_simple</depend>
   <depend>laser_geometry</depend>
+  <depend>ira_laser_tools</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
