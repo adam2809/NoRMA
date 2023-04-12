@@ -57,7 +57,7 @@ def get_gopro_mount_width(parts):
 
 rod_width = 20
 rod_depth = rod_width
-rod_height = 180
+rod_height = 135
 rod_taper_offset = 30
 def rod():
     res = (cq
@@ -72,11 +72,12 @@ def rod():
       .loft(combine=True)
     )
 
+    mount_y_offset = (rod_width+get_gopro_mount_width(3))/2
     for part in gopro_mount(0,2):
-        part=part.translate((0,dual_mount_y_offset,rod_height))
+        part=part.translate((0,mount_y_offset,rod_height))
         res+=part
     for part in gopro_mount(0,2):
-        part=part.translate((0,-dual_mount_y_offset,rod_height))
+        part=part.translate((0,-mount_y_offset,rod_height))
         res+=part
     for part in gopro_mount(180,2):
         part=part.translate((0,0,-base_height*2))
@@ -189,18 +190,19 @@ def rail_mount(width,gap,to_subtract,mount_count=2,is_vertical_mount=True):
       
     )
 
-    dual_mount_y_offset = (rod_width+get_gopro_mount_width(3))/2 if mount_count == 2 else 0
+    mount_y_offset = (rod_width+get_gopro_mount_width(3))/2 if mount_count == 2 else 0
 
-    rotation = 180 if is_vertical_mount else 90
+    rotation = 0 if is_vertical_mount else 90
     
 
     for m in gopro_mount(0):
         m = m.rotate((0,0,1),(0,0,0),rotation)
-        res += m.translate((0,-dual_mount_y_offset,width/2))
+        res += m.translate((0,-mount_y_offset,width/2))
 
     if mount_count == 2:
         for m in gopro_mount(0):
-            res += m.translate((0,dual_mount_y_offset,width/2))
+            m = m.rotate((0,0,1),(0,0,0),180)
+            res += m.translate((0,mount_y_offset,width/2))
 
 
     (top,bottom) = (res
@@ -307,9 +309,9 @@ def caster_dual_rail_mount():
         cq.Workplane('YZ').cylinder(1000,rail_mount_ir)
     )
 
-rear_rail_mount_height = 30
-rear_rail_mount_depth = 30
-rear_rail_mount_width_e = 33
+rear_rail_mount_height = 32.7
+rear_rail_mount_depth = 32.7
+rear_rail_mount_width_e = 35.7
 rear_rail_mount_gap = rear_rail_mount_width_e/3
 def rear_rail_mount():
     return rail_mount(
@@ -321,16 +323,15 @@ def rear_rail_mount():
 #m5x20 - 10
 #m3x32 - 10
 #m2.5  - 5
-show_object(rear_rail_mount())
-#show_object(caster_dual_rail_mount())
 
-
-export = 0
+export = 1
 if export == 1:
     exporters.export(rod(),'stls/rod.stl')
     exporters.export(lidar_box(),'stls/lidar_box.stl')
-    exporters.export(rail_mount()[0],'stls/rail_mount_top.stl')
-    exporters.export(rail_mount()[1],'stls/rail_mount_bottom.stl')
+    exporters.export(caster_dual_rail_mount()[0],'stls/caster_dual_rail_mount_top.stl')
+    exporters.export(caster_dual_rail_mount()[1],'stls/caster_dual_rail_mount_bottom.stl')
+    exporters.export(rear_rail_mount()[0],'stls/rear_rail_mount_top.stl')
+    exporters.export(rear_rail_mount()[1],'stls/rear_rail_mount_bottom.stl')
     exporters.export(imu_box()[0],'stls/imu_box_top.stl')
     exporters.export(imu_box()[1],'stls/imu_box_bottom.stl')
 
