@@ -3,6 +3,9 @@
   
   <arg name="serial_port" default="/dev/ttyACM0"/>
   <arg name="frame_id" default="laser"/>
+  <arg name="angle_min" default="-1.57079632679"/>
+  <arg name="angle_max" default="1.57079632679"/>
+
   <remap from="/scan" to="/scan_$(arg frame_id)" />
 
   <node name="urg_node_$(arg frame_id)" pkg="urg_node" type="urg_node" output="screen">
