@@ -8,7 +8,7 @@ hole_r = 5.09/2+0.2
 outer_radius = 14.88/2
 base_height = 15
 hole_height = 10
-nut_diameter = 9
+nut_diameter = 10
 nut_thickness = 4
 nut_holder_r = (nut_diameter + 2.4)/2
 
@@ -140,8 +140,8 @@ rail_mount_screw_hole_r = 8/2
 rail_mount_screw_stickout_length = 7
 rail_mount_cbore_length = 1
 
-m3_hole_r = 3.1/2
-m3_nut_d = 6.3
+m3_hole_r = 3.5/2
+m3_nut_d = 7.2
 m3_nut_length = 2.2
 
 def rail_mount(width,gap,to_subtract,mount_count=2,is_vertical_mount=True):
@@ -240,8 +240,8 @@ def imu_box():
     box_height = box_height_i + box_thickness*2
 
     port_slot = (cq
-      .Workplane('XZ',(0,box_depth/2,-(box_height_i-port_hole_height)/2))
-      .box(port_hole_width,port_hole_height,box_thickness*3)
+      .Workplane('XZ',(0,box_depth/2,0))
+      .box(port_hole_width,box_height_i,box_thickness*3)
     )
 
     hex_holes = (cq
@@ -323,8 +323,7 @@ def rear_rail_mount():
 #m5x20 - 10
 #m3x32 - 10
 #m2.5  - 5
-
-export = 1
+export = 0
 if export == 1:
     exporters.export(rod(),'stls/rod.stl')
     exporters.export(lidar_box(),'stls/lidar_box.stl')
