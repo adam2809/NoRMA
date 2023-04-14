@@ -1,6 +1,5 @@
 <launch>
 
-    <include file="$(find norma_bringup)/launch/tf_publisher.launch" />
 
     <include file="$(find norma_bringup)/launch/urg_lidar.launch">
       <arg name="serial_port" value="/dev/ttyACM0" />
