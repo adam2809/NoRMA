@@ -57,7 +57,6 @@
   <exec_depend>rplidar_ros</exec_depend>
   <depend>roscpp</depend>
   <depend>pcl_ros</depend>
-  <depend>catkin_simple</depend>
   <depend>laser_geometry</depend>
   <depend>ira_laser_tools</depend>
 
