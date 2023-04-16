@@ -126,6 +126,8 @@ class Joystick():
             forwardCalib.append(self.__get_forward_backward())
             leftCalib.append(self.__get_left_right())
 
+        print(f'fb_calibration = {sum(forwardCalib)/len(forwardCalib)}')
+        print(f'lr_calibration = {sum(leftCalib)/len(leftCalib)}')
         self.set_calibration_vals(
             round(sum(forwardCalib)/len(forwardCalib)),
             round(sum(leftCalib)/len(leftCalib))
