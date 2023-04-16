@@ -38,6 +38,7 @@ def pose_cb (msg):
 
 
 def cmd_vel_cb(msg):
+    global curr_x
     curr_x = msg.linear.x
 
     
