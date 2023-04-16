@@ -41,6 +41,7 @@
   <exec_depend>map_server</exec_depend>
   <exec_depend>amcl</exec_depend>
   <exec_depend>laser_scan_matcher</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->
