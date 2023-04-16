@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
 
-rospy.init_node('scan_matching_vel')
+rospy.init_node('passthrough')
 
 cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
@@ -14,7 +14,7 @@ def joy_cb (msg):
 
    twist = Twist()
    twist.linear.x = x
-   twist.angular.z = y
+   twist.angular.z = 0
 
    cmd_vel_pub.publish(twist)
 
