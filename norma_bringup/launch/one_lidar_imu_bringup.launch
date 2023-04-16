@@ -1,0 +1,10 @@
+<launch>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_rear_laser_transform" args="0.38 0.3 0 0 0 0 base_link laser" />
+
+  <include file="$(find norma_bringup)/launch/urg_lidar.launch">
+    <arg name="serial_port" value="/dev/ttyACM0" />
+    <arg name="frame_id" value="laser"/>
+  </include> 
+
+  <include file="$(find norma_bringup)/launch/spatial.launch" />
+</launch>
