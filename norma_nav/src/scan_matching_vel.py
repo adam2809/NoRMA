@@ -15,23 +15,25 @@ prev = Pose2D()
 prev.x = 0
 prev.y = 0
 prev.theta = 0
+prev_time = 0.0
 
 curr_x = 0
 f = open('test.csv','w')
 def pose_cb (msg):
-    print('cos')
+    global prev_time
     x_diff = msg.x - prev.x
     y_diff = msg.y - prev.y
     theta_diff = msg.theta - prev.theta
     
     theta_no_zero = 0.001 if msg.theta == 0 else msg.theta
-
-    linear_vel = math.sqrt(x_diff**2 + y_diff**2)
-    angular_vel = theta_diff
+    time_diff = rospy.get_time()-prev_time
+    linear_vel = math.sqrt(x_diff**2 + y_diff**2)/time_diff
+    angular_vel = theta_diff/time_diff
 
     prev.x = msg.x
     prev.y = msg.y
     prev.theta = msg.theta
+    prev_time = rospy.get_time()
     f.write("{} , {}\n".format(linear_vel,curr_x))
 
 
