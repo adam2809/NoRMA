@@ -82,7 +82,7 @@ class Wheelchair_virtual_joystick_driver:
         Args:
             msg (geometry_msgs/Twist): ROS Twist message.
         """
-        scale = 10
+        scale = 1
         x = (msg.linear.x) * scale
         z = (msg.angular.z) * scale
 
