@@ -8,7 +8,7 @@
 
   <include file="$(find norma_bringup)/launch/laser_scan_merger.launch" />
 
-  <include file="$(find norma_nav)/launch/mapping_default.launch">
+  <include file="$(find norma_nav)/launch/hector_mapping.launch">
     <arg name="base_frame" value="$(arg base_frame)"/>
     <arg name="odom_frame" value="$(arg base_frame)"/>
     <arg name="pub_map_odom_transform" value="true"/>
