@@ -1,7 +1,7 @@
 <launch>
   <arg name="base_frame" default="base_link"/>
 
-  <group if="false">
+  <group if="true">
     <param name="laser_scan_matcher_node/do_compute_covariance" value="1"/>
     <param name="laser_scan_matcher_node/publish_pose_with_covariance" value="true"/>
     <param name="laser_scan_matcher_node/publish_pose_with_covariance_stamped" value="true"/>
@@ -18,6 +18,7 @@
     <param name="use_imu" value="true"/>
     <param name="use_odom" value="false"/>
     <param name="use_vel" value="false"/>
+    <param name="publish_tf" value="false"/>
 
   </node>
 
