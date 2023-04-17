@@ -1,5 +1,5 @@
 <launch>
-    <node name="wheelchair_driver" pkg="norma_driver" type="wrapper.py" />
-    <node name="passthrough" pkg="norma_driver" type="passthrough.py" />
+    <node name="wheelchair_driver" pkg="norma_driver" type="wrapper.py" output="screen" />
+    <node name="passthrough" pkg="norma_driver" type="passthrough.py" output="screen" />
 
 </launch>
