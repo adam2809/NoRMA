@@ -3,6 +3,7 @@
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
+from nav_msgs.msg import Odometry
 from std_msgs.msg import Header
 
 rospy.init_node('passthrough')
@@ -11,7 +12,7 @@ cmd_joy_pub = rospy.Publisher('/cmd_joy', Joy, queue_size=10)
 
 
 class PID():
-    def __init__(self,kp,ki,kd,desired,timestep,err_fun):
+    def __init__(self,kp,ki,kd):
         self.kp = kp
         self.ki = ki
         self.kd = kd
@@ -19,13 +20,11 @@ class PID():
         self.integral = 0
         self.prev_err = 0
 
-        self.err_fun = err_fun
-
 
     def control(self,new_input,desired,timestep):
         err = desired - new_input
         p = self.kp * err
-        self.integral = (self.integral + err * timestep) * self.kp
+        self.integral = (self.integral + err * timestep) * self.ki
         d = self.kd * (err - self.prev_err) * timestep
 
         self.prev_err = err
@@ -35,7 +34,7 @@ class PID():
 
 
 pid_angular = PID(0.2,0,0)
-pid_linear = PID(10,0,0)
+pid_linear = PID(50,0,0)
 
 odom_linear_vel = 0
 odom_angular_vel = 0
@@ -47,20 +46,20 @@ def odom_cb (msg):
 
 prev_cmd_vel_msg = 0
 def cmd_vel_cb(msg):
-    global last_msg
+    global prev_cmd_vel_msg
     cmd_linear_vel = msg.linear.x
     cmd_angular_vel = msg.angular.z
 
     new_linear_vel = pid_linear.control(
       odom_linear_vel,
       cmd_linear_vel,
-      rospy.get_rostime().secs - prev_cmd_vel_msg
+      1/10
     )
 
     prev_cmd_vel_msg = rospy.get_rostime().secs
 
     x = new_linear_vel
-    z = msg.axes[1]
+    z = 0
 
     h = Header()
     h.stamp = rospy.Time.now()
@@ -68,6 +67,8 @@ def cmd_vel_cb(msg):
     joy = Joy()
     joy.axes = [x,z]
     joy.header = h
+
+    print(f"Pubishing linear = {x} and angular = {z}")
 
     cmd_joy_pub.publish(joy)
 
