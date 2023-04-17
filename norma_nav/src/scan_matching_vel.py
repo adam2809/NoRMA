@@ -24,7 +24,7 @@ def close_file():
 rospy.init_node('scan_matching_vel')
 
 
-sub = rospy.Subscriber('/odometry/filtered_map', Odometry, odom_cb)
+sub = rospy.Subscriber('/odom', Odometry, odom_cb)
 sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_cb)
 rospy.on_shutdown(close_file)
 rospy.spin()

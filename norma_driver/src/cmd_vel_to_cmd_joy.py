@@ -80,6 +80,6 @@ def cmd_vel_cb(msg):
 
 
 sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_cb)
-sub = rospy.Subscriber('/odometry/filtered_map', Odometry, odom_cb)
+sub = rospy.Subscriber('/odom', Odometry, odom_cb)
 
 rospy.spin()

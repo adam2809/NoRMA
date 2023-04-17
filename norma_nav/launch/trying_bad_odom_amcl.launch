@@ -19,6 +19,6 @@
 
   <node pkg="map_server" name="map_server" type="map_server" args="/home/adam/catkin_ws/src/NoRMA/norma_nav/maps/lab_map.yaml"/>
 
-  <include file="$(find norma_nav)/launch/amcl_diff.launch" />
+  <include file="$(find norma_nav)/launch/nav/amcl_diff.launch" />
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find norma_nav)/rviz/gmapping.rviz" />
 </launch>

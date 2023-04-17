@@ -34,7 +34,7 @@
   <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
   <depend>costmap_2d</depend>
   <depend>tf2</depend>
-  <depend>base_local_planner</depend>
+  <depend>navigation</depend>
   <depend>gmapping</depend>
   <depend>hector_mapping</depend>
   <exec_depend>move_base</exec_depend>

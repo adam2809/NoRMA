@@ -5,8 +5,14 @@
   <include file="$(find norma_nav)/launch/laser_scan_matching.launch" />
   <include file="$(find norma_nav)/launch/robot_localization_scan_matching.launch" />
 
+  <node pkg="norma_driver" type="wrapper.py" name="wrapper" output="screen"/>
+  <node pkg="norma_driver" type="cmd_vel_to_cmd_joy.py" name="cmd_vel_to_joy" output="screen"/>
+
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
   <include file="$(find norma_nav)/launch/nav/amcl_diff.launch" />
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find norma_nav)/rviz/gmapping.rviz" />
+  <include file="$(find norma_nav)/launch/nav/move_base.launch" />
+
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find norma_nav)/rviz/nav.rviz" />
+  
 </launch>
