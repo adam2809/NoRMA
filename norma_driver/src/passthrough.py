@@ -3,10 +3,11 @@
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
+from std_msgs.msg import Header
 
 rospy.init_node('passthrough')
 
-cmd_joy_pub = rospy.Publisher('/cmd_joy', Twist, queue_size=10)
+cmd_joy_pub = rospy.Publisher('/cmd_joy', Joy, queue_size=10)
 
 def joy_cb (msg):
    x = msg.axes[0]
@@ -15,11 +16,11 @@ def joy_cb (msg):
    h = Header()
    h.stamp = rospy.Time.now()
 
-   joy = Twist()
-   joy.axis = [x,z]
+   joy = Joy()
+   joy.axes = [x,z]
    joy.header = h
 
-   cmd_vel_pub.publish(joy)
+   cmd_joy_pub.publish(joy)
 
 
 rospy.Subscriber('/joy', Joy, joy_cb)

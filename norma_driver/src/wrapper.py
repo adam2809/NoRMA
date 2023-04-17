@@ -82,8 +82,8 @@ class Wheelchair_virtual_joystick_driver:
         Args:
             msg (geometry_msgs/Joy): ROS Twist message.
         """
-        x = msg.axis[0]
-        z = msg.axis[1]
+        x = msg.axes[0]
+        z = msg.axes[1]
 
         if (x > 100):
             rospy.loginfo("Trimming x to 100")
