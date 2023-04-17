@@ -52,12 +52,15 @@ class Wheelchair_virtual_joystick_driver:
             calib_fb = 1218.0
             calib_lr = 1218.0
 
+        calib_fb = 1218.0
+        calib_lr = 1218.0
+
         if (calib_fb == -1 or calib_lr == -1):
             rospy.loginfo("No calibration values provided. Running calibration now...")
             self.joystick.calibrate()
             
         else:
-            self.joystick.set_calibration_values(calib_fb, calib_lr)
+            self.joystick.set_calibration_vals(calib_fb, calib_lr)
         rospy.loginfo("Calibration complete")
         
         self.stop_motion()
