@@ -33,7 +33,7 @@ class PID():
 
 
 
-pid_angular = PID(0.2,0,0)
+pid_angular = PID(35,0,0)
 pid_linear = PID(50,0,0)
 
 odom_linear_vel = 0
@@ -53,13 +53,19 @@ def cmd_vel_cb(msg):
     new_linear_vel = pid_linear.control(
       odom_linear_vel,
       cmd_linear_vel,
-      1/10
+      prev_cmd_vel_msg
+    )
+
+    new_angular_vel = pid_angular.control(
+      odom_angular_vel,
+      cmd_angular_vel,
+      prev_cmd_vel_msg
     )
 
     prev_cmd_vel_msg = rospy.get_rostime().secs
 
     x = new_linear_vel
-    z = 0
+    z = new_angular_vel
 
     h = Header()
     h.stamp = rospy.Time.now()
