@@ -39,8 +39,8 @@ class Wheelchair_virtual_joystick_driver:
         self.joystick = Joystick()
         self.last_message = rospy.Time.now()
 
-        calib_fb = -1
-        calib_lr = -1
+        calib_fb = 1218.0
+        calib_lr = 1218.0
 
         try:
             if rospy.has_param('/wheelchair_calibrate_fb'):
