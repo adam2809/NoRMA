@@ -39,8 +39,8 @@ class Wheelchair_virtual_joystick_driver:
         self.joystick = Joystick()
         self.last_message = rospy.Time.now()
 
-        calib_fb = 1218.0
-        calib_lr = 1218.0
+        calib_fb = -1
+        calib_lr = -1
 
         try:
             if rospy.has_param('/wheelchair_calibrate_fb'):
@@ -49,8 +49,8 @@ class Wheelchair_virtual_joystick_driver:
             if rospy.has_param('/wheelchair_calibrate_lr'):
                 calib_lr = rospy.get_param('/wheelchair_calibrate_lr')
         except KeyError:
-            calib_fb = -1
-            calib_lr = -1
+            calib_fb = 1218.0
+            calib_lr = 1218.0
 
         if (calib_fb == -1 or calib_lr == -1):
             rospy.loginfo("No calibration values provided. Running calibration now...")
