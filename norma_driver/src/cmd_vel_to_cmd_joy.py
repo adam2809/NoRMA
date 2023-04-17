@@ -33,8 +33,8 @@ class PID():
 
 
 
-pid_angular = PID(35,0,0)
-pid_linear = PID(50,0,0)
+pid_angular = PID(100,0,0)
+pid_linear = PID(120,0,0)
 
 odom_linear_vel = 0
 odom_angular_vel = 0
