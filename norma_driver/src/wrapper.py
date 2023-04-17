@@ -62,7 +62,7 @@ class Wheelchair_virtual_joystick_driver:
         
         self.stop_motion()
 
-        rospy.Subscriber('/cmd_vel', Twist, self.on_twist)
+        rospy.Subscriber('/cmd_joy', Joy, self.on_cmd_joy)
         self.joy_pub = rospy.Publisher('/joy', Joy, queue_size=10)
 
     def stop(self):
@@ -76,15 +76,14 @@ class Wheelchair_virtual_joystick_driver:
         """
         self.joystick.set_percent(0,0)
 
-    def on_twist(self, msg):
-        """Callback for the ROS twist subscriber.
+    def on_cmd_joy(self, msg):
+        """Callback for the ROS joy command subscriber.
 
         Args:
-            msg (geometry_msgs/Twist): ROS Twist message.
+            msg (geometry_msgs/Joy): ROS Twist message.
         """
-        scale = 1
-        x = (msg.linear.x) * scale
-        z = (msg.angular.z) * scale
+        x = msg.axis[0]
+        z = msg.axis[1]
 
         if (x > 100):
             rospy.loginfo("Trimming x to 100")

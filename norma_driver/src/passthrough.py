@@ -6,17 +6,20 @@ from sensor_msgs.msg import Joy
 
 rospy.init_node('passthrough')
 
-cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+cmd_joy_pub = rospy.Publisher('/cmd_joy', Twist, queue_size=10)
 
 def joy_cb (msg):
    x = msg.axes[0]
-   y = msg.axes[1]
+   z = msg.axes[1]
 
-   twist = Twist()
-   twist.linear.x = x
-   twist.angular.z = 0
+   h = Header()
+   h.stamp = rospy.Time.now()
 
-   cmd_vel_pub.publish(twist)
+   joy = Twist()
+   joy.axis = [x,z]
+   joy.header = h
+
+   cmd_vel_pub.publish(joy)
 
 
 rospy.Subscriber('/joy', Joy, joy_cb)
