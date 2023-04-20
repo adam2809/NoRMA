@@ -36,11 +36,11 @@ def mount_part(wp,origin,is_nut):
     res = res
     return res
 
-def gopro_mount(rot_hole,parts=3):
+def gopro_mount(rot_hole,parts=3,gap_arg=3.12):
     if parts == 3:
-        origin_y = -(gap+thickness)
+        origin_y = -(gap_arg+thickness)
     else:
-        origin_y = -(gap+thickness)/2
+        origin_y = -(gap_arg+thickness)/2
     nut_truth = [False,False,True]
     res = []
     for i in range(parts):
@@ -48,7 +48,7 @@ def gopro_mount(rot_hole,parts=3):
         wp = cq.Workplane(origin=origin)
         mount = mount_part(wp,origin,nut_truth[i])
         mount = mount.rotate((0,0,base_height),(0,1,base_height),rot_hole)
-        origin_y += gap+thickness
+        origin_y += gap_arg+thickness
         res.append(mount)
     return res
 
@@ -79,7 +79,7 @@ def rod():
     for part in gopro_mount(0,2):
         part=part.translate((0,-mount_y_offset,rod_height))
         res+=part
-    for part in gopro_mount(180,2):
+    for part in gopro_mount(180,2,3.6):
         part=part.translate((0,0,-base_height*2))
         part = part.rotate((0,0,1),(0,0,0),90)
         res+=part
@@ -117,6 +117,12 @@ def lidar_box():
       .cutBlind(-lidar_box_thick)
     )
     res = (res
+      .faces('<Y').workplane(centerOption='CenterOfBoundBox')
+      .center(0,-lidar_box_height_i/2+lidar_box_thick/2)
+      .rect(lidar_box_width_i/2,lidar_box_height_i/2,centered=False)
+      .cutBlind(-lidar_box_thick)
+    )
+    res = (res
       .faces('<Z').workplane(centerOption='CenterOfBoundBox').transformed(rotate=(0,0,45))
       .polygon(4,(lidar_box_external_diagonal_holes+lidar_box_internal_diagonal_holes)/2)
       .vertices()
@@ -124,10 +130,10 @@ def lidar_box():
       
     )
 
-    mount_list = gopro_mount(90)
+    mount_list = gopro_mount(90,gap_arg=3.6)
     for mnt in mount_list:
         mnt = mnt.rotate((0,0,base_height),(1,0,base_height),90)
-        res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2+0.15))
+        res+=mnt.translate((base_height+lidar_box_width/2,0,-(base_height+lidar_box_height)/2+0.65))
     return res
 
 rail_mount_ir = 35.5/2
@@ -323,7 +329,7 @@ def rear_rail_mount():
 #m5x20 - 10
 #m3x32 - 10
 #m2.5  - 5
-export = 0
+export = 1
 if export == 1:
     exporters.export(rod(),'stls/rod.stl')
     exporters.export(lidar_box(),'stls/lidar_box.stl')
