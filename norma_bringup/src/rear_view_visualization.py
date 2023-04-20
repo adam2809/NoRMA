@@ -28,13 +28,33 @@ def laser_cb(msg):
     global ranges
     ranges = msg.ranges
 
+    angle_min = msg.angle_min
+    angle_max = msg.angle_max
+    angle_increment = msg.angle_increment
+
+    range_min = msg.range_min
+    range_max = msg.range_max
+
 rospy.init_node('rear_view_visualization')
-
 rgb_info = rospy.wait_for_message('/camera/color/camera_info', CameraInfo, timeout=10)
-
+range_max
 rospy.Subscriber('/camera/color/image_raw', Image, rgb_cb)
 rospy.Subscriber('/scan_camera', LaserScan, laser_cb)
 
 
 while not rospy.is_shutdown():
+    angle = range_max
+    for r in ranges:
+        if r > range_max or r < range_min:
+            continue
+        
+        x = r * cos(angle)
+        z = r * sin(angle)
+        
+        for y in range(-0.1,0.1,0.01)
+            pass
+
+        angle += angle_increment
+
+
     rospy.spinOnce()
