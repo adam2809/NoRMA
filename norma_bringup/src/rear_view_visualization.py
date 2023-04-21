@@ -2,7 +2,7 @@
 
 import rospy
 from sensor_msgs.msg import Imu,Image
-from cv_bridge import CvBridge
+from cv_bridge import CvBridge, CvBridgeError
 import cv2
 import cv_bridge
 import numpy
@@ -20,14 +20,13 @@ width = 0
 thresh = 1
 bridge = cv_bridge.CvBridge()
 rgb = []
+vis_pub = rospy.Publisher('/camera/vis', Image,queue_size=10)
 def rgb_cb (msg):
     global width,height,rgb
     width = msg.width 
     height = msg.height 
     
-    rgb = bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-    print(rgb)
-    cv2.imshow('costam',rgb)
+    rgb = bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
 
 angle_min = 0
@@ -71,36 +70,38 @@ msg = rospy.wait_for_message('/camera/color/image_raw', Image, timeout=10)
 rgb = numpy.copy(bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8'))
 
 rospy.Subscriber('/scan_camera', LaserScan, laser_cb)
-vis_pub = rospy.Publisher('/camera/vis', Image,queue_size=10)
 
 rate = rospy.Rate(30)
 
 while not rospy.is_shutdown():
-    angle = range_max
+
+    angle = angle_max
+
+    vis = rgb
     for r in ranges:
         if r > range_max or r < range_min:
             continue
         
+        print(angle)
         x = r * cos(angle)
         z = r * sin(angle)
         
-        y_inc = 0.01
-        y = -0.1
-        y_max = 0.1
-        while y < y_max:
-           #(x_img,y_img) = get_pixel_from_point(rgb_info,[x,y,z]) 
-
-           (x_img,y_img) = (300,300)
-           vis = cv2.circle(rgb, (x_img,y_img), radius=0, color=(0, 0, 255), thickness=-1)
-
-           try:
-               print('publinc')
-               vis_pub.publish(self.bridge.cv2_to_imgmsg(vis, "bgr8"))
-           except CvBridgeError as e:
-               print(e)
-
-           y += y_inc
+        (x_img,y_img) = get_pixel_from_point(rgb_info,[x,0,z]) 
+        x_img = int(x_img)
+        y_img = int(y_img)
+        print(x_img)
+        print(y_img)
+        print('-------------------')
+        vis = cv2.circle(vis, (x_img,y_img), radius=5, color=(0, 0, 255), thickness=-1)
 
         angle += angle_increment
+    
+    try:
+        vis_msg = bridge.cv2_to_imgmsg(vis, "bgr8")
+        vis_msg.header.frame_id = "camera_link"
+        vis_pub.publish(vis_msg)
+    except CvBridgeError as e:
+        print(e)
 
-        rate.sleep()
+    rate.sleep()
+
