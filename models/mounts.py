@@ -326,10 +326,27 @@ def rear_rail_mount():
         cq.Workplane('YZ').box(rear_rail_mount_depth,rear_rail_mount_height,1000),
         1,False
     )
+
+def rs_mount():
+    res = (cq
+      .Workplane()
+      .box(24,30,outer_radius*2)
+      .faces('>Z').workplane(centerOption='CenterOfBoundBox')
+      .rect(7,22)
+      .vertices()
+      .cboreHole(3,6,outer_radius*1.5)
+    )
+    for p in gopro_mount(90,2):
+
+        res+=p.translate((base_height+12,0,-2*outer_radius))
+    return res
+
+
+show_object(rs_mount())
 #m5x20 - 10
 #m3x32 - 10
 #m2.5  - 5
-export = 1
+export = 0
 if export == 1:
     exporters.export(rod(),'stls/rod.stl')
     exporters.export(lidar_box(),'stls/lidar_box.stl')
@@ -339,4 +356,5 @@ if export == 1:
     exporters.export(rear_rail_mount()[1],'stls/rear_rail_mount_bottom.stl')
     exporters.export(imu_box()[0],'stls/imu_box_top.stl')
     exporters.export(imu_box()[1],'stls/imu_box_bottom.stl')
+    exporters.export(rs_mount(),'stls/rs_mount.stl')
 
