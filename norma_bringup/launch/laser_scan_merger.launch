@@ -1,23 +1,9 @@
 <launch>
-
-
-    <include file="$(find norma_bringup)/launch/urg_lidar.launch">
-      <arg name="serial_port" value="/dev/ttyACM0" />
-      <arg name="frame_id" value="laser_rear"/>
-      <arg name="angle_max" value="0"/>
-    </include> 
-
-    <include file="$(find norma_bringup)/launch/urg_lidar.launch">
-      <arg name="serial_port" value="/dev/ttyACM1" />
-      <arg name="frame_id" value="laser_front"/>
-      <arg name="angle_min" value="0"/>
-    </include> 
-
 	<node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen">
       <param name="destination_frame" value="base_link"/>
       <param name="cloud_destination_topic" value="/cloud_merged"/>
       <param name="scan_destination_topic" value="/scan_merged"/>
-      <param name="laserscan_topics" value ="/scan_laser_rear /scan_laser_front" />
+      <param name="laserscan_topics" value ="/scan_laser_left /scan_laser_right" />
       <param name="angle_increment" value="0.006135923322290182"/>
       <param name="scan_time" value="0.1"/>
       <param name="range_min" value="0.02"/>

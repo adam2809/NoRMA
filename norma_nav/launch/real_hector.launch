@@ -6,7 +6,7 @@
   <arg name="base_frame" default="base_link"/>
   <arg name="map_frame"  default="map"/>
 
-  <include file="$(find norma_bringup)/launch/laser_scan_merger.launch" />
+  <include file="$(find norma_bringup)/launch/two_lidar_imu_bringup.launch" />
 
   <include file="$(find norma_nav)/launch/hector_mapping.launch">
     <arg name="base_frame" value="$(arg base_frame)"/>
