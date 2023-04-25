@@ -7,6 +7,7 @@
 
   <node pkg="norma_driver" type="wrapper.py" name="wrapper" output="screen"/>
   <node pkg="norma_driver" type="cmd_vel_to_cmd_joy.py" name="cmd_vel_to_joy" output="screen"/>
+  <node pkg="norma_driver" type="passthrough.py" name="passthrough"/>
 
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
