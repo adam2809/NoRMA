@@ -1,6 +1,6 @@
-<launch>
+launch>
 <node pkg="amcl" type="amcl" name="amcl" output="screen">
-  <remap from="scan" to="/scan_laser"/>
+  <remap from="scan" to="/scan_merged"/>
   <!-- Publish scans from best pose at a max of 10 Hz -->
   <param name="odom_model_type" value="diff"/>
   <param name="odom_alpha5" value="0.1"/>

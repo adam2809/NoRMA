@@ -1,7 +1,7 @@
 <launch>
   <arg name="map_file" default="$(find norma_nav)/maps/lab_map.yaml"/>
 
-  <include file="$(find norma_bringup)/launch/one_lidar_imu_bringup.launch" />
+  <include file="$(find norma_bringup)/launch/two_lidar_imu_bringup.launch" />
   <include file="$(find norma_nav)/launch/laser_scan_matching.launch" />
   <include file="$(find norma_nav)/launch/robot_localization_scan_matching.launch" />
 
