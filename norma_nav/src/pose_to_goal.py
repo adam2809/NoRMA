@@ -11,13 +11,13 @@ from geometry_msgs.msg import PoseStamped,Point
 class Navigator:
     def __init__(self):
         rospy.init_node("navigator")
-        rospy.Subscriber('/pose/goal', PoseStamped, self.moveToGoal)
+        self.moveToGoal()
 
-    def moveToGoal(self,msg):
-        xGoal = msg.pose.position.x
-        yGoal = msg.pose.position.y
+    def moveToGoal(self):
+        xGoal = 0
+        yGoal = 0
 
-        ac = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+        ac = actionlib.SimpleActionClient("/move_base", MoveBaseAction)
 
         #wait for the action server to come up
         while(not ac.wait_for_server(rospy.Duration.from_sec(5.0))):
