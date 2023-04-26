@@ -32,9 +32,9 @@ class PID():
 
 def trim_deadzone(curr_dz,desi_dz,curr_val):
     if curr_val > desi_dz:
-        return curr_dz
+        return curr_dz + curr_val
     elif curr_val < -desi_dz:
-        return -curr_dz
+        return -(curr_dz + curr_val)
     else:
         return 0
 
