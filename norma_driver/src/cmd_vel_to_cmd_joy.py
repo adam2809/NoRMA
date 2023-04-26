@@ -34,7 +34,7 @@ def trim_deadzone(curr_dz,desi_dz,curr_val):
     if curr_val > desi_dz:
         return curr_dz + curr_val
     elif curr_val < -desi_dz:
-        return -(curr_dz + curr_val)
+        return -curr_dz + curr_val
     else:
         return 0
 
@@ -79,8 +79,8 @@ while not rospy.is_shutdown():
       timestep
     )
 
-    x = trim_deadzone(15,5,new_linear_vel)
-    z = trim_deadzone(20,5,new_angular_vel)
+    x = trim_deadzone(15,2,new_linear_vel)
+    z = trim_deadzone(20,2,new_angular_vel)
 
     h = Header()
     h.stamp = rospy.Time.now()
