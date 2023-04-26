@@ -2,7 +2,6 @@
 <launch>
   <node pkg="norma_driver" type="wrapper.py" name="wrapper" output="screen"/>
   <node pkg="norma_driver" type="cmd_vel_to_cmd_joy.py" name="cmd_vel_to_joy" output="screen"/>
-  <node pkg="norma_driver" type="passthrough.py" name="passthrough"/>
 
   <include file="$(find norma_bringup)/launch/spatial.launch" />
 </launch>
