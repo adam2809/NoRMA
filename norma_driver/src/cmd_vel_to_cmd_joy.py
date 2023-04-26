@@ -23,18 +23,17 @@ class PID():
 
     def control(self,new_input,desired,timestep):
         err = desired - new_input
-        p = self.kp * err
-        self.integral = (self.integral + err * timestep) * self.ki
-        d = self.kd * (err - self.prev_err) * timestep
+        self.integral = self.integral + err * timestep
+        derivative = (err - self.prev_err) / timestep
 
         self.prev_err = err
 
-        return p + self.integral + d
+        return self.kp * err + self.ki * self.integral + self.kd * derivative
 
 
 
-pid_angular = PID(10,0.1,0)
-pid_linear = PID(10,0.5,0)
+pid_angular = PID(10,0.05,0)
+pid_linear = PID(10,0.05,0)
 
 odom_linear_vel = 0
 odom_angular_vel = 0
@@ -44,25 +43,28 @@ def odom_cb (msg):
     odom_angular_vel = msg.twist.twist.angular.z
 
 
+cmd_linear_vel = 0
+cmd_angular_vel = 0
 prev_cmd_vel_msg = 0
 def cmd_vel_cb(msg):
-    global prev_cmd_vel_msg
+    global prev_cmd_vel_msg, cmd_linear_vel,cmd_angular_vel
     cmd_linear_vel = msg.linear.x
     cmd_angular_vel = msg.angular.z
 
     new_linear_vel = pid_linear.control(
       odom_linear_vel,
       cmd_linear_vel,
-      prev_cmd_vel_msg
+      rospy.get_rostime().secs - prev_cmd_vel_msg
     )
 
     new_angular_vel = pid_angular.control(
       odom_angular_vel,
       cmd_angular_vel,
-      prev_cmd_vel_msg
+      rospy.get_rostime().secs - prev_cmd_vel_msg
     )
 
     prev_cmd_vel_msg = rospy.get_rostime().secs
+    print(prev_cmd_vel_msg)
 
     x = new_linear_vel
     z = new_angular_vel
