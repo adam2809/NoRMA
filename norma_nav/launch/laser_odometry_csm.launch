@@ -7,7 +7,7 @@
   <arg name="topic_in" default="/scan_merged"/>
 
   <!-- A config file for the laser odometry node. -->
-  <arg name="node_config_file" default="$(find norma_nav)/config/laser_odometry_node_default.yaml"/>
+  <arg name="node_config_file" default="$(find norma_nav)/param/laser_odometry_node_default.yaml"/>
 
   <!-- A config file for the laser odometry plugin. -->
   <arg name="plugin_config_file" default="$(find laser_odometry_csm)/cfg/LaserOdometryCsmParameters.yaml"/>
