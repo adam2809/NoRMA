@@ -19,5 +19,4 @@
 
   <include file="$(find norma_bringup)/launch/laser_scan_merger.launch" />
 
-  <include file="$(find norma_bringup)/launch/spatial.launch" />
 </launch>
