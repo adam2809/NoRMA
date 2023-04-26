@@ -88,18 +88,18 @@ class Wheelchair_virtual_joystick_driver:
         x = msg.axes[0]
         z = msg.axes[1]
 
-        if (x > 100):
-            rospy.loginfo("Trimming x to 100")
-            x = 100
-        if (x < -100):
-            rospy.loginfo("Trimming x to -100")
-            x = -100
-        if (z > 100):
-            rospy.loginfo("Trimming z to 100")
-            z = 100
-        if (z < -100):
-            rospy.loginfo("Trimming z to -100")
-            z = -100
+        if (x > 90):
+            rospy.loginfo("Trimming x to 90")
+            x = 90
+        if (x < -90):
+            rospy.loginfo("Trimming x to -90")
+            x = -90
+        if (z > 90):
+            rospy.loginfo("Trimming z to 90")
+            z = 90
+        if (z < -90):
+            rospy.loginfo("Trimming z to -90")
+            z = -90
 
         rospy.loginfo("X = {}, Z = {}".format(x, z))
         self.last_message = rospy.Time.now()
