@@ -54,7 +54,7 @@ cmd_linear_vel = 0
 cmd_angular_vel = 0
 latest_cmd_vel_msg = 0
 def cmd_vel_cb(msg):
-    global prev_cmd_vel_msg, cmd_linear_vel,cmd_angular_vel
+    global latest_cmd_vel_msg, cmd_linear_vel,cmd_angular_vel
     cmd_linear_vel = msg.linear.x
     cmd_angular_vel = msg.angular.z
     latest_cmd_vel_msg = rospy.get_time()
@@ -81,7 +81,6 @@ while not rospy.is_shutdown():
       cmd_angular_vel,
       timestep
     )
-
     if rospy.get_time() - latest_cmd_vel_msg > 0.3:
         x = 0
         z = 0
