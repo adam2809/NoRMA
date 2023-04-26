@@ -2,8 +2,8 @@
 ## Default parameters of the laser_odometry base class. ##
 ##########################################################
 
-laser_frame:      base_link
-base_frame:       base_link
+laser_frame:      base_footprint
+base_frame:       base_footprint
 fixed_frame:      odom
 laser_odom_frame: odom
 global_frame:     map

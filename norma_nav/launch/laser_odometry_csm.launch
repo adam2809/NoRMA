@@ -4,7 +4,7 @@
   <arg name="debug" default="false"/>
 
   <!-- The input topic. -->
-  <arg name="topic_in" default="/scan_merged"/>
+  <arg name="topic_in" default="/scan"/>
 
   <!-- A config file for the laser odometry node. -->
   <arg name="node_config_file" default="$(find norma_nav)/param/laser_odometry_node_default.yaml"/>

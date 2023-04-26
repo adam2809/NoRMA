@@ -1,7 +1,7 @@
 <launch>
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_left_laser_transform" args="0.38 0.3 0 0 0 0 base_link laser_left" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_left_laser_transform" args="0.38 0.3 0 0 0 0 base_footprint laser_left" />
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_right_laser_transform" args="0.38 -0.3 0 0 0 0 base_link laser_right" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_right_laser_transform" args="0.38 -0.3 0 0 0 0 base_footprint laser_right" />
 
   <include file="$(find norma_bringup)/launch/urg_lidar.launch">
     <arg name="serial_port" value="/dev/ttyACM0" />
