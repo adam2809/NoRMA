@@ -6,15 +6,15 @@
   <include file="$(find norma_bringup)/launch/urg_lidar.launch">
     <arg name="serial_port" value="/dev/ttyACM0" />
     <arg name="frame_id" value="laser_right"/>
-    <arg name="angle_min" value="-1.527165"/>
-    <arg name="angle_max" value="1.527165"/>
+    <arg name="angle_min" value="-1.407165"/>
+    <arg name="angle_max" value="1.407165"/>
   </include> 
 
   <include file="$(find norma_bringup)/launch/urg_lidar.launch">
     <arg name="serial_port" value="/dev/ttyACM1" />
     <arg name="frame_id" value="laser_left"/>
-    <arg name="angle_min" value="-1.527165"/>
-    <arg name="angle_max" value="1.527165"/>
+    <arg name="angle_min" value="-1.407165"/>
+    <arg name="angle_max" value="1.407165"/>
   </include> 
 
   <include file="$(find norma_bringup)/launch/laser_scan_merger.launch" />
