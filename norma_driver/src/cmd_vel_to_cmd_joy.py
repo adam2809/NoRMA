@@ -32,8 +32,8 @@ class PID():
 
 
 
-pid_angular = PID(10,0.05,0)
-pid_linear = PID(10,0.05,0)
+pid_angular = PID(10,0.5,0)
+pid_linear = PID(10,0.5,0)
 
 odom_linear_vel = 0
 odom_angular_vel = 0
@@ -51,20 +51,26 @@ def cmd_vel_cb(msg):
     cmd_linear_vel = msg.linear.x
     cmd_angular_vel = msg.angular.z
 
+
+sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_cb)
+sub = rospy.Subscriber('/odom', Odometry, odom_cb)
+
+RATE = 10
+rate = rospy.Rate(RATE)
+timestep = 1.0/RATE
+
+while not rospy.is_shutdown():
     new_linear_vel = pid_linear.control(
       odom_linear_vel,
       cmd_linear_vel,
-      rospy.get_rostime().secs - prev_cmd_vel_msg
+      timestep
     )
 
     new_angular_vel = pid_angular.control(
       odom_angular_vel,
       cmd_angular_vel,
-      rospy.get_rostime().secs - prev_cmd_vel_msg
+      timestep
     )
-
-    prev_cmd_vel_msg = rospy.get_rostime().secs
-    print(prev_cmd_vel_msg)
 
     x = new_linear_vel
     z = new_angular_vel
@@ -79,9 +85,6 @@ def cmd_vel_cb(msg):
     print(f"Pubishing linear = {x} and angular = {z}")
 
     cmd_joy_pub.publish(joy)
+    rate.sleep()
 
 
-sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_cb)
-sub = rospy.Subscriber('/odom', Odometry, odom_cb)
-
-rospy.spin()
