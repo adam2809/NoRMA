@@ -40,7 +40,7 @@ def trim_deadzone(curr_dz,desi_dz,curr_val):
 
 
 pid_angular = PID(50,5,0)
-pid_linear = PID(30,3,0)
+pid_linear = PID(30,4,0)
 
 odom_linear_vel = 0
 odom_angular_vel = 0
@@ -52,11 +52,12 @@ def odom_cb (msg):
 
 cmd_linear_vel = 0
 cmd_angular_vel = 0
-prev_cmd_vel_msg = 0
+latest_cmd_vel_msg = 0
 def cmd_vel_cb(msg):
     global prev_cmd_vel_msg, cmd_linear_vel,cmd_angular_vel
     cmd_linear_vel = msg.linear.x
     cmd_angular_vel = msg.angular.z
+    latest_cmd_vel_msg = rospy.get_time()
 
 
 sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_cb)
@@ -67,6 +68,8 @@ rate = rospy.Rate(RATE)
 timestep = 1.0/RATE
 
 while not rospy.is_shutdown():
+        
+
     new_linear_vel = pid_linear.control(
       odom_linear_vel,
       cmd_linear_vel,
@@ -79,8 +82,12 @@ while not rospy.is_shutdown():
       timestep
     )
 
-    x = trim_deadzone(15,2,new_linear_vel)
-    z = trim_deadzone(20,2,new_angular_vel)
+    if rospy.get_time() - latest_cmd_vel_msg > 0.3:
+        x = 0
+        z = 0
+    else:
+        x = trim_deadzone(15,2,new_linear_vel)
+        z = trim_deadzone(20,2,new_angular_vel)
 
     h = Header()
     h.stamp = rospy.Time.now()
@@ -88,8 +95,6 @@ while not rospy.is_shutdown():
     joy = Joy()
     joy.axes = [x,z]
     joy.header = h
-
-    print(f"Pubishing linear = {x} and angular = {z}")
 
     cmd_joy_pub.publish(joy)
     rate.sleep()
