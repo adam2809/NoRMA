@@ -1,5 +1,5 @@
 <launch>
-  <arg name="base_frame" default="base_link"/>
+  <arg name="base_frame" default="base_footprint"/>
 
   <group if="true">
     <param name="laser_scan_matcher_node/do_compute_covariance" value="1"/>
@@ -8,7 +8,7 @@
   </group>
 
   <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node">
-    <remap from="scan" to="/scan_merged"/>
+    <remap from="scan" to="/scan"/>
 
     <param name="max_iterations" value="10"/>
 
