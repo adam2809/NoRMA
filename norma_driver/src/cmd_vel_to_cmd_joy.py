@@ -39,8 +39,8 @@ def trim_deadzone(curr_dz,desi_dz,curr_val):
         return 0
 
 
-pid_angular = PID(50,5,0)
-pid_linear = PID(30,4,0)
+pid_angular = PID(60,12,0)
+pid_linear = PID(50,22.5,0)
 
 odom_linear_vel = 0
 odom_angular_vel = 0
@@ -85,8 +85,8 @@ while not rospy.is_shutdown():
         x = 0
         z = 0
     else:
-        x = trim_deadzone(15,2,new_linear_vel)
-        z = trim_deadzone(20,2,new_angular_vel)
+        x = trim_deadzone(15,1,new_linear_vel)
+        z = trim_deadzone(20,1,new_angular_vel)
 
     h = Header()
     h.stamp = rospy.Time.now()
