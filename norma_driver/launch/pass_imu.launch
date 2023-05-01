@@ -1,0 +1,6 @@
+<launch>
+    <node name="wheelchair_driver" pkg="norma_driver" type="wrapper.py" output="screen" />
+    <node name="passthrough" pkg="norma_driver" type="passthrough.py" output="screen" />
+
+    <include file="$(find norma_bringup)/launch/spatial.launch" />
+</launch>
