@@ -39,7 +39,7 @@ def trim_deadzone(curr_dz,desi_dz,curr_val):
         return 0
 
 
-pid_angular = PID(60,12,0)
+pid_angular = PID(60,9,0)
 pid_linear = PID(50,22.5,0)
 
 odom_linear_vel = 0
