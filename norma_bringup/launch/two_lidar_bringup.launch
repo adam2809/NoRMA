@@ -4,14 +4,14 @@
   <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_right_laser_transform" args="0.38 -0.3 0 0 0 0 base_footprint laser_right" />
 
   <include file="$(find norma_bringup)/launch/urg_lidar.launch">
-    <arg name="serial_port" value="/dev/ttyACM0" />
+    <arg name="serial_port" value="/dev/ttyACM1" />
     <arg name="frame_id" value="laser_right"/>
     <arg name="angle_min" value="-1.407165"/>
     <arg name="angle_max" value="1.407165"/>
   </include> 
 
   <include file="$(find norma_bringup)/launch/urg_lidar.launch">
-    <arg name="serial_port" value="/dev/ttyACM1" />
+    <arg name="serial_port" value="/dev/ttyACM0" />
     <arg name="frame_id" value="laser_left"/>
     <arg name="angle_min" value="-1.407165"/>
     <arg name="angle_max" value="1.407165"/>
