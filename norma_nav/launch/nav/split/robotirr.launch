@@ -1,7 +1,8 @@
 <launch>
   <arg name="map_file" default="$(find norma_nav)/maps/lab_map.yaml"/>
 
-  <include file="$(find norma_bringup)/launch/two_lidar_bringup.launch" />
+  <!-- base_link is the name of the cameras base frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_camera_transform" args="-0.48 0 0 0 0 0 base_footprint base_link" />
   <include file="$(find norma_nav)/launch/laser_scan_matching.launch" />
   <include file="$(find norma_nav)/launch/robot_localization_scan_matching.launch" />
 
