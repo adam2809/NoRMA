@@ -5,6 +5,7 @@
   <include file="$(find norma_nav)/launch/laser_scan_matching.launch" />
   <include file="$(find norma_nav)/launch/robot_localization_scan_matching.launch" />
 
+  <include file="$(find norma_bringup)/launch/rs_laserscan.launch" />
 
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 

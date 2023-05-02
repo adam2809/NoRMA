@@ -3,8 +3,10 @@
 
   <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_right_laser_transform" args="0.38 -0.3 0 0 0 0 base_footprint laser_right" />
 
-  
   <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_mid_transform" args="0.38 0 0 0 0 0 base_footprint laser_mid" />
+
+  <!-- base_link is the name of the cameras base frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_camera_transform" args="-0.48 0 0 0 0 0 base_footprint base_link" />
 
   <include file="$(find norma_bringup)/launch/urg_lidar.launch">
     <arg name="serial_port" value="/dev/ttyACM1" />
